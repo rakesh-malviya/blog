@@ -1,0 +1,62 @@
+---
+# # # # # # # # # #
+#  K i k o f r i  #
+# # # # # # # # # #
+
+# Basic
+name: "Rakesh Malviya"
+description: "dirty and malnourished jekyll theme"
+
+# URL
+url: " "
+#baseurl: ""
+permalink: /:year/:month/:day/:title.html
+
+# Markdown
+markdown: kramdown
+
+# Navigation
+nav:
+ - name: "about"
+   href: "https://sites.google.com/site/rakeshmalviyasite/"
+
+ - name: "reference"
+   href: "https://sites.google.com/site/rakeshmalviyasite/"
+
+ - name: "contact"
+   href: "https://sites.google.com/site/rakeshmalviyasite/"
+
+# Sass
+sass:
+ style: :compressed
+
+# Excerpt
+excerpt_separator: <!-ex->
+
+#Gems
+gems: [jekyll-paginate,jekyll-seo-tag]
+paginate: 10
+paginate_path: "/page:num/"
+
+# Scopes
+defaults:
+ -
+  scope:
+   path: ""
+   type: "pages"
+  values:
+   layout: "page"
+ -
+  scope:
+   path: ""
+   type: "posts"
+  values:
+   layout: "post"
+
+ - 
+  scope:
+   path: "assets/img"
+  values:
+   image: true
+
+---

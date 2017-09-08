@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+	<channel>
+		<title>Rakesh Malviya</title>
+		<link>http://localhost:4000</link>
+		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+		
+			<item>
+				<title>3. Neural Networks Part 2: Activation functions and differentiation</title>
+        <description>&lt;h2 id=&quot;activation-functions&quot;&gt;Activation functions&lt;/h2&gt;
+
+&lt;p&gt;A neural network is a network of artificial neurons connected to each other in a specific way. Job of neural network is to learn from given data. The prediction function that neural network must learn can be non-linear. Activation function in artificial neurons helps the neural network to learn non-linear prediction function.&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Linear prediction&lt;/th&gt;
+      &lt;th style=&quot;text-align: center&quot;&gt;Non-linear prediction&lt;sup&gt;&lt;a href=&quot;#references&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/img/blog/3/3_1_linear.png&quot; alt=&quot;&quot; /&gt;&lt;/td&gt;
+      &lt;td style=&quot;text-align: center&quot;&gt;&lt;img src=&quot;/assets/img/blog/3/3_2_nonlinear.png&quot; alt=&quot;&quot; /&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Activation functions (generally) have functional form of &lt;script type=&quot;math/tex&quot;&gt;f(u) = f(w^{T}{x} + b)&lt;/script&gt;, where &lt;script type=&quot;math/tex&quot;&gt;u = {b} + \sum_{j=1}^{n} {w_j}\cdot{x_j} = w^{T}{x} + b&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;w = (w_1,w_2,.......w_n)&lt;/script&gt; weight vector  and &lt;script type=&quot;math/tex&quot;&gt;x= (x_1,x_2,.....x_n)&lt;/script&gt; single training data vector&lt;/p&gt;
+
+&lt;h4 id=&quot;1-sigmoid-activation-function&quot;&gt;1. Sigmoid activation function&lt;/h4&gt;
+
+&lt;p&gt;A sigmoid function, &lt;script type=&quot;math/tex&quot;&gt;f(u) = \frac{1}{1+e^{-u}}&lt;/script&gt;.  It takes a real-valued number and “squeeze” it into range between 0 and 1. Large negative numbers become &lt;script type=&quot;math/tex&quot;&gt;\approx 0&lt;/script&gt; and large positive numbers become &lt;script type=&quot;math/tex&quot;&gt;\approx 1&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h5 id=&quot;pros&quot;&gt;Pros:&lt;/h5&gt;
+&lt;p&gt;For classification problem it is used as activation of output layer of a neural network.&lt;/p&gt;
+
+&lt;h5 id=&quot;cons&quot;&gt;Cons:&lt;/h5&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Saturate and kill gradients:&lt;/strong&gt; When neuron’s activation saturates at 1 or 0 , the gradient becomes almost zero. Which will make the neuron unable to backpropagate and learn.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Outputs are not zero-centered:&lt;/strong&gt; Since outputs are in range 0 to 1 neurons in next layer will receive data that is not zero centered. Hence gradient of weights &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; during backpropagation will be either all positive or all negative, which can cause undesirable zig-zagging dynamics in gradient updates of weights. When considering gradient added over all training data in a batch this problem is not much severe compared to “Saturate and kill gradients”&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;2-tanh-activation-function&quot;&gt;2. Tanh activation function&lt;/h4&gt;
+&lt;p&gt;A tanh function, &lt;script type=&quot;math/tex&quot;&gt;f(u) = \frac{e^{u}-e^{-u}}{e^{u}+e^{-u}} = \frac{sinh(u)}{cosh(u)}&lt;/script&gt;.  It takes a real-valued number and “squeeze” it into range between -1 and 1. Large negative numbers become &lt;script type=&quot;math/tex&quot;&gt;\approx -1&lt;/script&gt; and large positive numbers become &lt;script type=&quot;math/tex&quot;&gt;\approx 1&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h5 id=&quot;pros-1&quot;&gt;Pros:&lt;/h5&gt;
+&lt;p&gt;It is preferred over sigmoid because its outputs are zero centered&lt;/p&gt;
+
+&lt;h4 id=&quot;3-relu-activation-function&quot;&gt;3. ReLU activation function&lt;/h4&gt;
+&lt;p&gt;The Rectified Linear Unit, ReLU is &lt;script type=&quot;math/tex&quot;&gt;f(u) = max(0,u)&lt;/script&gt;&lt;/p&gt;
+
+&lt;h5 id=&quot;pros-2&quot;&gt;Pros:&lt;/h5&gt;
+&lt;ol&gt;
+  &lt;li&gt;Greatly increase training speed compared to tanh and sigmoid&lt;/li&gt;
+  &lt;li&gt;Less expensive computations compared to tanh and sigmoid&lt;/li&gt;
+  &lt;li&gt;Reduces likelihood of the gradient to vanish. Since when &lt;script type=&quot;math/tex&quot;&gt;u &gt; 0&lt;/script&gt;, the gradient has constant value.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Sparsity:&lt;/strong&gt; When more &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+u &lt;= 0 %]]&gt;&lt;/script&gt;, the &lt;script type=&quot;math/tex&quot;&gt;f(u)&lt;/script&gt; can be more sparse&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&quot;cons-1&quot;&gt;Cons:&lt;/h5&gt;
+&lt;ol&gt;
+  &lt;li&gt;Tend to blow up activation (there is no mechanism to constrain the output of the neuron, as &lt;script type=&quot;math/tex&quot;&gt;u&lt;/script&gt; itself is the output).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Closed ReLU or Dead ReLU&lt;/strong&gt;: If inputs tend to make &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+u&lt;=0 %]]&gt;&lt;/script&gt; than the most of the neurons will always have 0 gradient updates hence closed or dead.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h4 id=&quot;4-leaky-relu&quot;&gt;4. Leaky ReLU:&lt;/h4&gt;
+
+&lt;p&gt;It solves the dead ReLU problem. &lt;script type=&quot;math/tex&quot;&gt;0.01&lt;/script&gt; is coefficient of leakage.  Leaky ReLU is as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+f(u)= 
+\begin{cases}
+    x,&amp; \text{if } x &gt; 0\\
+    (0.01)x,              &amp; \text{otherwise}
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;h4 id=&quot;5-parameterized-relu-or-prelu&quot;&gt;5. Parameterized ReLU or PReLU:&lt;/h4&gt;
+&lt;p&gt;Parameterizes coefficient of leakage &lt;script type=&quot;math/tex&quot;&gt;\alpha&lt;/script&gt; in Leaky ReLU.
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+f(u)= 
+\begin{cases}
+    x,&amp; \text{if } x &gt; 0\\
+    \alpha{x},              &amp; \text{otherwise}
+\end{cases} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;6-maxout&quot;&gt;6. Maxout&lt;/h4&gt;
+&lt;p&gt;Generalization of ReLU, Leaky ReLU and PReLU. It does not have functional form of &lt;script type=&quot;math/tex&quot;&gt;f(u) =  f(w^{T}{x} + b)&lt;/script&gt;, instead it computes function &lt;script type=&quot;math/tex&quot;&gt;max({w'^T}{x} + b',{w^T}{x} + b)&lt;/script&gt;.&lt;/p&gt;
+
+&lt;h5 id=&quot;pros-3&quot;&gt;Pros:&lt;/h5&gt;
+&lt;p&gt;Maxout has pros of ReLU but doesn’t have dead ReLU issue&lt;/p&gt;
+
+&lt;h5 id=&quot;cons-2&quot;&gt;Cons:&lt;/h5&gt;
+&lt;p&gt;It has twice number of weight parameters to learn &lt;script type=&quot;math/tex&quot;&gt;w'&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;what-activation-function-should-i-use-2&quot;&gt;What Activation function should I use ?&lt;sup&gt;&lt;a href=&quot;#references&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;For output layer use sigmoid if classification task&lt;/li&gt;
+  &lt;li&gt;For output layer use no activation or Purelin function &lt;script type=&quot;math/tex&quot;&gt;f(u) = u&lt;/script&gt; if regression task&lt;/li&gt;
+  &lt;li&gt;For other neurons:
+    &lt;ol&gt;
+      &lt;li&gt;Use the ReLU non-linearity if you carefully set learning rates and monitor the fraction of “dead ReLU” in network.&lt;/li&gt;
+      &lt;li&gt;Else try Leaky ReLU or Maxout.&lt;/li&gt;
+      &lt;li&gt;Or try tanh but it will work worse than ReLU&lt;/li&gt;
+      &lt;li&gt;Never use sigmoid&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;differentiation&quot;&gt;Differentiation:&lt;/h2&gt;
+&lt;h4 id=&quot;basic-formulas&quot;&gt;Basic formulas:&lt;/h4&gt;
+&lt;p&gt;Given &lt;script type=&quot;math/tex&quot;&gt;f(x)&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;g(x)&lt;/script&gt; are differentiable functions (the derivative exists), &lt;script type=&quot;math/tex&quot;&gt;c&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; are any real numbers:
+&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align} 
+\frac{d}{dx}f(x) &amp;= f'(x) \tag{1} \label{eq1} \\
+\frac{d}{dx}g(x) &amp;= g'(x) \tag{2} \label{eq2} \\
+\frac{d}{dx}(f(x) \pm g(x)) &amp;= \frac{d}{dx}f(x) \pm \frac{d}{dx}g(x)  \\
+ &amp;=  f'(x) \pm g'(x) \tag{3}  \label{eq3} \\
+\frac{d}{dx}x^n &amp;= nx^{n-1}  &amp;&amp; \text{power-rule} \tag{4} \label{eq4} \\
+\frac{d}{dx} f(x)g(x) &amp;= f'(x)g(x) + f(x)g'(x) &amp;&amp; \text{product-rule} \tag{5} \label{eq5} \\ 
+\frac{d}{dx} \Bigg [\frac{f(x)}{g(x)}\Bigg ]  &amp;= \frac{f'(x)g(x)-g'(x)f(x)}{g^{2}(x)} &amp;&amp; \text{Quotient Rule} \tag{6} \label{eq6} \\ 
+\frac{d}{dx} f(g(x))  &amp;= f'(g(x))g'(x) &amp;&amp; \text{Chain Rule} \tag{7} \label{eq7} \\
+\frac{d}{dx} c &amp;= 0 \tag{8} \label{eq8} \\
+tanh(x) &amp;= \frac{sinh(x)}{cosh(x)}  \tag{9} \label{eq9} \\
+\frac{d}{dx}sinh(x) &amp;= cosh(x)  \tag{10} \label{eq10} \\
+\frac{d}{dx}cosh(x) &amp;= sinh(x)  \tag{11} \label{eq11} \\
+\frac{d}{dx}e^x &amp;= e^x  \tag{12} \label{eq12} \\
+\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;sigmoid-function&quot;&gt;Sigmoid function:&lt;/h4&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align} 
+\frac{d}{dx} f(x) &amp;= \frac{d}{dx} \Bigg[ \frac{1}{1+e^{-x}} \Bigg] \\
+&amp;= \frac{d}{dx} \bigg[ \frac{e^x}{1+e^x} \bigg] \\ 
+&amp;= \frac {\bigg(\frac{d}{dx}e^x\bigg)(1+e^x) - \bigg(\frac{d}{dx}(1 + e^x)\bigg)(e^x)}{(1+e^x)^2} &amp;&amp;  \text{by \eqref{eq6}} \\
+&amp;= \frac {\bigg(\frac{d}{dx}e^x\bigg)(1+e^x) - \bigg(\frac{d}{dx} 1 +\frac{d}{dx} e^x\bigg)(e^x)}{(1+e^x)^2} &amp;&amp; \text{by \eqref{eq3}} \\
+&amp;= \frac {(e^x)(1+e^x) - (e^x)(e^x)}{(1+e^x)^2} &amp;&amp; \text{by \eqref{eq8} and \eqref{eq12}} \\
+&amp;= \bigg[\frac {(e^x)}{(1+e^x)}\bigg]  - \bigg[\frac{(e^x)^2}{(1+e^x)^2}\bigg] \\
+&amp;= \bigg[\frac {e^x}{1+e^x}\bigg]  - \bigg[\frac{e^x}{1+e^x}\bigg]^2 \\
+&amp;= \bigg[\frac {1}{1+e^{-x}}\bigg]  - \bigg[\frac{1}{1+e^{-x}}\bigg]^2 \\
+&amp; = f(x) - (f(x))^2 \\
+&amp; = f(x) (1 - f(x)) \\
+\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;tanh-function&quot;&gt;Tanh function:&lt;/h4&gt;
+&lt;p&gt;&lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+\begin{align} 
+\frac{d}{dx} f(x) &amp;= \frac{d}{dx} \Bigg[ \frac{sinh(x)}{cosh(x)} \Bigg] \\
+&amp;= \Bigg[ \frac{\bigg(\frac{d}{dx}sinh(x)\bigg)cosh(x) - \bigg(\frac{d}{dx}cosh(x)\bigg)sinh(x)}{(cosh(x))^2} \Bigg] &amp;&amp; \text{by \eqref{eq6}} \\
+&amp; = \frac{(cosh(x))^2 - (sinh(x))^2}{(cosh(x))^2} &amp;&amp; \text{by \eqref{eq10} and \eqref{eq11}} \\ 
+&amp; = 1 - \bigg(\frac{sinh(x)}{cosh(x)}\bigg)^2 \\
+&amp; = 1 - (tanh(x))^2 &amp;&amp; \text{by \eqref{eq9}} \\
+&amp; = 1 - (f(x))^2 \\
+\end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Tensorflow playground &lt;a href=&quot;http://playground.tensorflow.org&quot;&gt;link&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;http://cs231n.github.io&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+				<pubDate>Sat, 02 Sep 2017 00:00:00 +0530</pubDate>
+				<link>http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html</guid>
+			</item>
+		
+			<item>
+				<title>2. Neural Networks Part 1: Logistic Regression (Least Square Error)</title>
+        <description>&lt;p&gt;Required Learning: Linear regression basics &lt;a href=&quot;http://www.holehouse.org/mlclass/01_02_Introduction_regression_analysis_and_gr.html&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units.&lt;/p&gt;
+
+&lt;h3 id=&quot;establish-notations-for-future-use1&quot;&gt;Establish notations for future use&lt;sup&gt;&lt;a href=&quot;#references&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;x^{(i)}&lt;/script&gt; to denote the i&lt;sup&gt;th&lt;/sup&gt; “input ” of training data&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;y^{(i)}&lt;/script&gt; to denote the i&lt;sup&gt;th&lt;/sup&gt; “output” or target of training data&lt;/li&gt;
+  &lt;li&gt;Pair &lt;script type=&quot;math/tex&quot;&gt;(x^{(i)}, y^{(i)})&lt;/script&gt; is called a training example&lt;/li&gt;
+  &lt;li&gt;The dataset that we’ll be using to learn—a list of m training examples &lt;script type=&quot;math/tex&quot;&gt;\{(x(i), y(i)); i = 1, . . . , m\}&lt;/script&gt; — is called a training set&lt;/li&gt;
+  &lt;li&gt;Each &lt;script type=&quot;math/tex&quot;&gt;x^{(i)}&lt;/script&gt; in training set can have &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; &lt;strong&gt;features&lt;/strong&gt; such that &lt;script type=&quot;math/tex&quot;&gt;x^{(i)}&lt;/script&gt; is a vector &lt;script type=&quot;math/tex&quot;&gt;(x^{(i)}_1,x^{(i)}_2,x^{(i)}_3,..... x^{(i)}_n)&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;In current setup of logistic regression &lt;script type=&quot;math/tex&quot;&gt;y^{(i)}&lt;/script&gt; is scalar value&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Note that the superscript “(i)” in the notation is simply an index into the training set, and has nothing to do with exponentiation.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/2/2_1_logistic_reg.svg&quot; alt=&quot;&quot; title=&quot;Single neuron&quot; /&gt;
+&lt;i&gt;&lt;center&gt;Fig: Single neuron&lt;/center&gt;&lt;/i&gt;&lt;/p&gt;
+
+&lt;p&gt;Let &lt;script type=&quot;math/tex&quot;&gt;y'^{(i)} = f(u^{(i)})&lt;/script&gt; , 
+where&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;y'^{(i)}&lt;/script&gt; is predicted output&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;f&lt;/script&gt; is activation function&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;u^{(i)} = {b} + \sum_{j=1}^{n} {w_j}\cdot{x_j^{(i)}}&lt;/script&gt;, for &lt;script type=&quot;math/tex&quot;&gt;i^{th}&lt;/script&gt; training example, where &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; is bias of the neuron.&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_j&lt;/script&gt; &lt;strong&gt;weights&lt;/strong&gt; or &lt;strong&gt;training parameters&lt;/strong&gt; we need to learn&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We will apply gradient descent to minimize the squared error cost function &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;, also called least square error&lt;/p&gt;
+
+&lt;p&gt;\begin{align}
+J = \sum_{i=1}^{m} {\dfrac{1}{2}}(y^{(i)} - y’^{(i)})^2 \tag{1} \label{eq1}
+\end{align}&lt;/p&gt;
+
+&lt;p&gt;We will use Sigmoid function as activation function, i.e. &lt;script type=&quot;math/tex&quot;&gt;\sigma(u)&lt;/script&gt;
+\begin{align}
+\sigma(u^{(i)}) = \dfrac{1}{1+e^{-u^{(i)}}} = f(u^{(i)}) = y’^{(i)}   \tag{2} \label{eq2}
+\end{align}&lt;/p&gt;
+
+&lt;h4 id=&quot;derivatives&quot;&gt;Derivatives&lt;/h4&gt;
+
+&lt;p&gt;\begin{align}
+\frac{\partial\sigma(u)}{\partial{u}} = \sigma(u)\cdot(1 - \sigma(u))   \tag{3} \label{eq3}
+\end{align}
+\begin{align}
+\frac{\partial{J}}{\partial{y’^{(i)}}} = y’^{(i)} - y^{(i)}   \tag{4} \label{eq4}
+\end{align}
+\begin{align}
+\frac{\partial{u^{(i)}}}{\partial{w_j}} = x_j^{(i)}   \tag{5} \label{eq5}
+\end{align}
+\begin{align}
+\frac{\partial{u^{(i)}}}{\partial{b}} = 1   \tag{6} \label{eq6}
+\end{align}&lt;/p&gt;
+
+&lt;h4 id=&quot;gradient-descent&quot;&gt;Gradient Descent&lt;/h4&gt;
+
+&lt;p&gt;To learn &lt;script type=&quot;math/tex&quot;&gt;w_j&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; parameter so that &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; is minimum. We will find &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial{J}}{\partial{w_j}}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial{J}}{\partial{b}}&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note: &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; is our loss function and &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; is for indexing&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Since, &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; is function of &lt;script type=&quot;math/tex&quot;&gt;y'^{(i)}&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;y'^{(i)}&lt;/script&gt; is function of &lt;script type=&quot;math/tex&quot;&gt;u^{(i)}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;u^{(i)}&lt;/script&gt; is function of &lt;script type=&quot;math/tex&quot;&gt;w_j&lt;/script&gt; by &lt;script type=&quot;math/tex&quot;&gt;\eqref{eq1} and \eqref{eq2}&lt;/script&gt;. Using chain rule of differentiation&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align} 
+\frac{\partial{J}}{\partial{w_j}} &amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{w_j}}   &amp;&amp; \text{by \eqref{eq1}} \\
+&amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  \\
+&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  &amp;&amp; \text{by \eqref{eq4}} \\
+&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  &amp;&amp; \text{by \eqref{eq2} and \eqref{eq3}} \\
+\frac{\partial{J}}{\partial{w_j}} &amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} &amp;&amp; \text{by \eqref{eq5}} \tag{7} \label{eq7}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;So during the training update equation for &lt;script type=&quot;math/tex&quot;&gt;w_j&lt;/script&gt; over all &lt;script type=&quot;math/tex&quot;&gt;j = 1 ..... n&lt;/script&gt; is as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align} 
+w_j &amp;= w_j - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
+&amp;= w_j - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} &amp;&amp; \text{by \eqref{eq7}}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Similarly:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align} 
+\frac{\partial{J}}{\partial{b}} &amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{b}}   &amp;&amp; \text{by \eqref{eq1}} \\
+&amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  \\
+&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  &amp;&amp; \text{by \eqref{eq4}} \\
+&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  &amp;&amp; \text{by \eqref{eq2} and \eqref{eq3}} \\
+\frac{\partial{J}}{\partial{b}} &amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) &amp;&amp; \text{by \eqref{eq6}} \tag{8} \label{eq8}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Update equation for bias &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; is as follows:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+\begin{align} 
+b &amp;= b - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
+&amp;= b - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) &amp;&amp; \text{by \eqref{eq8}}
+\end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Training Steps:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Choose an initial vector of parameters  &lt;script type=&quot;math/tex&quot;&gt;w = (w_1,......w_n)&lt;/script&gt;, bias &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; and learning rate &lt;script type=&quot;math/tex&quot;&gt;\eta&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;Repeat for predifined epoch such that approximate minimum &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; loss is obtained:
+    &lt;ol&gt;
+      &lt;li&gt;Evaluate and store &lt;script type=&quot;math/tex&quot;&gt;y'^{(i)}&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;i = 1,2,3...m&lt;/script&gt; training examples by using equation &lt;script type=&quot;math/tex&quot;&gt;\eqref{eq2}&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Update bias, &lt;script type=&quot;math/tex&quot;&gt;b = b - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;For &lt;script type=&quot;math/tex&quot;&gt;j = 1,2,.....n&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; :
+        &lt;ol&gt;
+          &lt;li&gt;Update, &lt;script type=&quot;math/tex&quot;&gt;w_j = w_j - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)}&lt;/script&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/blog/blob/master/code/notebooks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;here&lt;/a&gt; is the python implementation of this article.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;http://cs229.stanford.edu/notes&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;previous-posts&quot;&gt;Previous Posts:&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;/2017/08/15/word2vec-basics.html&quot;&gt;“1. Word2vec Part 1: Basics”&lt;/a&gt;&lt;/p&gt;
+</description>
+				<pubDate>Fri, 25 Aug 2017 00:00:00 +0530</pubDate>
+				<link>http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html</guid>
+			</item>
+		
+			<item>
+				<title>1. Word2vec Part 1: Basics</title>
+        <description>&lt;p&gt;For NLP with Deep learning there is need to represent text into data that can be understood by Neural networks.&lt;/p&gt;
+
+&lt;h2 id=&quot;one-hot-encoding&quot;&gt;One Hot encoding&lt;/h2&gt;
+
+&lt;p&gt;In this encoding we represent word vectors by zeros and ones.&lt;/p&gt;
+
+&lt;p&gt;For e.g.  assume we have following text (or corpus): &lt;strong&gt;“I like Deep learning and NLP”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Than our vocabulary is as follows:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Word&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Word&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Index&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt; &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;0&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;I&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;1&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;like&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;2&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Deep&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;3&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;learning&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;4&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;and&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;5&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;NLP&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Than &lt;strong&gt;one-hot representation&lt;/strong&gt; of each word will be as follows:&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;Word&lt;/th&gt;
+      &lt;th style=&quot;text-align: left&quot;&gt;One-hot&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;I&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;100000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;like&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;010000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;Deep&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;001000&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;learning&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;000100&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;and&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;000010&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;NLP&lt;/td&gt;
+      &lt;td style=&quot;text-align: left&quot;&gt;000001&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Notice the position of word in vocabulary and position of the bit set in its one hot representation&lt;/p&gt;
+
+&lt;p&gt;Under this representation, each word is Independent. It hard find its relationship with other words in Corpus. Because of this one hot is also called &lt;strong&gt;Local representation&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;word2vec-intuition&quot;&gt;Word2Vec Intuition&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;“You shall know a word by the company it keeps” - By J.R. Firth 1957”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;You can get lot of value by representing a word by means of its neighbors. This way of representing a word given the distributions of its neighbors is called &lt;strong&gt;Distributional similarity based representation&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Word2Vec is also called &lt;strong&gt;Distributed representation&lt;/strong&gt; because of how it is different from “One Hot” representation which is local.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;government debt problems turning into&lt;/strong&gt; banking &lt;strong&gt;crises as has happened in&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;saying that Europe needs unified&lt;/strong&gt; banking &lt;strong&gt;regulation to replace the hodgepodge&lt;/strong&gt;&lt;br /&gt;
+In above two sentences words in &lt;strong&gt;bold&lt;/strong&gt; describe the word “banking”&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Warning Note:&lt;/strong&gt; Below example gives only a partial picture of how word2vec algorithm can understands similarity between words but this is not how this algorithm is implemented:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Let us assume we have the following sentences in our text.
+
+1. Sam is **good** boy
+2. Sam is **fine** boy
+3. Sam is **great** boy
+
+Given the neighbor words &quot;Sam&quot;, &quot;is&quot;, and &quot;boy&quot; algorithms understands that &quot;good&quot;, &quot;fine&quot;, and &quot;great&quot; are similar words
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Word2Vec algorithm can be implemented in 2 ways:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Skip Gram model&lt;/li&gt;
+  &lt;li&gt;CBOW (Continuous Bag-of-word) Model&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;skip-gram-model&quot;&gt;Skip Gram model&lt;/h2&gt;
+
+&lt;p&gt;Let us assume we have following text (or corpus): &lt;strong&gt;“I like Deep learning and NLP”&lt;/strong&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Word vec&lt;/th&gt;
+      &lt;th&gt;Word&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;w_0&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;I&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;w_1&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;like&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;w_2&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;deep&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;w_3&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;learning&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;w_4&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;and&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;script type=&quot;math/tex&quot;&gt;w_5&lt;/script&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;strong&gt;NLP&lt;/strong&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Skip gram defines a model that predicts context words given center word &lt;script type=&quot;math/tex&quot;&gt;w_t&lt;/script&gt;. So the skip gram model trains to maximize probability of context word (neighbor words) given center words. &lt;br /&gt;
+i.e. &lt;script type=&quot;math/tex&quot;&gt;P(w_{c}  \vert  w_t)&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;For  t = 0&lt;br /&gt;
+center word, &lt;script type=&quot;math/tex&quot;&gt;w_t&lt;/script&gt; =&lt;script type=&quot;math/tex&quot;&gt;w_0&lt;/script&gt; = (“I”)&lt;br /&gt;
+let window for neighbors is 5 so,&lt;br /&gt;
+context words = &lt;script type=&quot;math/tex&quot;&gt;w_{c}&lt;/script&gt; = (“like”,”deep”)&lt;/p&gt;
+
+&lt;p&gt;For t= 2:&lt;br /&gt;
+center word, &lt;script type=&quot;math/tex&quot;&gt;w_t&lt;/script&gt; = &lt;script type=&quot;math/tex&quot;&gt;w_2&lt;/script&gt; = (“deep”)&lt;br /&gt;
+let window for neighbors is 5 so,&lt;br /&gt;
+context words = &lt;script type=&quot;math/tex&quot;&gt;w_{c}&lt;/script&gt; = (“I”, “like”, “learning”, “and”)&lt;/p&gt;
+
+&lt;p&gt;So we can start by initialize random words vectors than adjust there values while training to maximize probability  &lt;script type=&quot;math/tex&quot;&gt;P(w_c \vert w_t)&lt;/script&gt; or minimize loss function &lt;script type=&quot;math/tex&quot;&gt;J =1- P(w_c \vert w_t)&lt;/script&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;algorithm-steps&quot;&gt;Algorithm steps:&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;Look at different positions of &lt;script type=&quot;math/tex&quot;&gt;t&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;Calculate loss function &lt;script type=&quot;math/tex&quot;&gt;J =1- P(w_c \vert w_t)&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Adjust values of word vectors &lt;script type=&quot;math/tex&quot;&gt;w_t&lt;/script&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;cbow-continuous-bag-of-word-model&quot;&gt;CBOW (Continuous Bag-of-word) Model&lt;/h2&gt;
+&lt;p&gt;CBOW defines a model that predicts center word &lt;script type=&quot;math/tex&quot;&gt;w_t&lt;/script&gt; given context words. So CBOW model trains to maximizeprobability of context word (neighbor words) given center words. &lt;br /&gt;
+i.e. &lt;script type=&quot;math/tex&quot;&gt;P(w_t \vert w_c)&lt;/script&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;For us humans it is very easy to predict fill in the blanks like below:
+The Leopard ____ very fast
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;next-&quot;&gt;Next ?&lt;/h2&gt;
+&lt;p&gt;In next posts we will dive deep into word2vec derivations and algorithms&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Mikolov, Tomas, et al. “Distributed representations of words and phrases and their compositionality.” Advances in neural information processing systems. 2013.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Stanford CS224n: Natural Language Processing with Deep Learning&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+				<pubDate>Tue, 15 Aug 2017 00:00:00 +0530</pubDate>
+				<link>http://localhost:4000/2017/08/15/word2vec-basics.html</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/08/15/word2vec-basics.html</guid>
+			</item>
+		
+	</channel>
+</rss>

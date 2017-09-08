@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3. Neural Networks Part 2: Activation functions and differentiation</title>
+  <link href="/fonts.css" rel="stylesheet" charset="utf-8">
+  <link rel="stylesheet" href="/style.css">
+  <!-- Begin Jekyll SEO tag v2.2.3 -->
+<title>Neural Networks Part 2: Activation functions and differentiation | Rakesh Malviya</title>
+<meta property="og:title" content="Neural Networks Part 2: Activation functions and differentiation" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Activation functions A neural network is a network of artificial neurons connected to each other in a specific way. Job of neural network is to learn from given data. The prediction function that neural network must learn can be non-linear. Activation function in artificial neurons helps the neural network to learn non-linear prediction function. Linear prediction Non-linear prediction1 Activation functions (generally) have functional form of , where , weight vector and single training data vector 1. Sigmoid activation function A sigmoid function, . It takes a real-valued number and “squeeze” it into range between 0 and 1. Large negative numbers become and large positive numbers become . Pros: For classification problem it is used as activation of output layer of a neural network. Cons: Saturate and kill gradients: When neuron’s activation saturates at 1 or 0 , the gradient becomes almost zero. Which will make the neuron unable to backpropagate and learn. Outputs are not zero-centered: Since outputs are in range 0 to 1 neurons in next layer will receive data that is not zero centered. Hence gradient of weights during backpropagation will be either all positive or all negative, which can cause undesirable zig-zagging dynamics in gradient updates of weights. When considering gradient added over all training data in a batch this problem is not much severe compared to “Saturate and kill gradients” 2. Tanh activation function A tanh function, . It takes a real-valued number and “squeeze” it into range between -1 and 1. Large negative numbers become and large positive numbers become . Pros: It is preferred over sigmoid because its outputs are zero centered 3. ReLU activation function The Rectified Linear Unit, ReLU is Pros: Greatly increase training speed compared to tanh and sigmoid Less expensive computations compared to tanh and sigmoid Reduces likelihood of the gradient to vanish. Since when , the gradient has constant value. Sparsity: When more , the can be more sparse Cons: Tend to blow up activation (there is no mechanism to constrain the output of the neuron, as itself is the output). Closed ReLU or Dead ReLU: If inputs tend to make than the most of the neurons will always have 0 gradient updates hence closed or dead. 4. Leaky ReLU: It solves the dead ReLU problem. is coefficient of leakage. Leaky ReLU is as follows: 5. Parameterized ReLU or PReLU: Parameterizes coefficient of leakage in Leaky ReLU. 6. Maxout Generalization of ReLU, Leaky ReLU and PReLU. It does not have functional form of , instead it computes function . Pros: Maxout has pros of ReLU but doesn’t have dead ReLU issue Cons: It has twice number of weight parameters to learn and What Activation function should I use ?2 For output layer use sigmoid if classification task For output layer use no activation or Purelin function if regression task For other neurons: Use the ReLU non-linearity if you carefully set learning rates and monitor the fraction of “dead ReLU” in network. Else try Leaky ReLU or Maxout. Or try tanh but it will work worse than ReLU Never use sigmoid Differentiation: Basic formulas: Given and are differentiable functions (the derivative exists), and are any real numbers: Sigmoid function: Tanh function: References: Tensorflow playground link http://cs231n.github.io" />
+<meta property="og:description" content="Activation functions A neural network is a network of artificial neurons connected to each other in a specific way. Job of neural network is to learn from given data. The prediction function that neural network must learn can be non-linear. Activation function in artificial neurons helps the neural network to learn non-linear prediction function. Linear prediction Non-linear prediction1 Activation functions (generally) have functional form of , where , weight vector and single training data vector 1. Sigmoid activation function A sigmoid function, . It takes a real-valued number and “squeeze” it into range between 0 and 1. Large negative numbers become and large positive numbers become . Pros: For classification problem it is used as activation of output layer of a neural network. Cons: Saturate and kill gradients: When neuron’s activation saturates at 1 or 0 , the gradient becomes almost zero. Which will make the neuron unable to backpropagate and learn. Outputs are not zero-centered: Since outputs are in range 0 to 1 neurons in next layer will receive data that is not zero centered. Hence gradient of weights during backpropagation will be either all positive or all negative, which can cause undesirable zig-zagging dynamics in gradient updates of weights. When considering gradient added over all training data in a batch this problem is not much severe compared to “Saturate and kill gradients” 2. Tanh activation function A tanh function, . It takes a real-valued number and “squeeze” it into range between -1 and 1. Large negative numbers become and large positive numbers become . Pros: It is preferred over sigmoid because its outputs are zero centered 3. ReLU activation function The Rectified Linear Unit, ReLU is Pros: Greatly increase training speed compared to tanh and sigmoid Less expensive computations compared to tanh and sigmoid Reduces likelihood of the gradient to vanish. Since when , the gradient has constant value. Sparsity: When more , the can be more sparse Cons: Tend to blow up activation (there is no mechanism to constrain the output of the neuron, as itself is the output). Closed ReLU or Dead ReLU: If inputs tend to make than the most of the neurons will always have 0 gradient updates hence closed or dead. 4. Leaky ReLU: It solves the dead ReLU problem. is coefficient of leakage. Leaky ReLU is as follows: 5. Parameterized ReLU or PReLU: Parameterizes coefficient of leakage in Leaky ReLU. 6. Maxout Generalization of ReLU, Leaky ReLU and PReLU. It does not have functional form of , instead it computes function . Pros: Maxout has pros of ReLU but doesn’t have dead ReLU issue Cons: It has twice number of weight parameters to learn and What Activation function should I use ?2 For output layer use sigmoid if classification task For output layer use no activation or Purelin function if regression task For other neurons: Use the ReLU non-linearity if you carefully set learning rates and monitor the fraction of “dead ReLU” in network. Else try Leaky ReLU or Maxout. Or try tanh but it will work worse than ReLU Never use sigmoid Differentiation: Basic formulas: Given and are differentiable functions (the derivative exists), and are any real numbers: Sigmoid function: Tanh function: References: Tensorflow playground link http://cs231n.github.io" />
+<link rel="canonical" href="http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html" />
+<meta property="og:url" content="http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html" />
+<meta property="og:site_name" content="Rakesh Malviya" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-09-02T00:00:00+05:30" />
+<script type="application/ld+json">
+{"@context":"http://schema.org","@type":"BlogPosting","headline":"Neural Networks Part 2: Activation functions and differentiation","datePublished":"2017-09-02T00:00:00+05:30","dateModified":"2017-09-02T00:00:00+05:30","description":"Activation functions A neural network is a network of artificial neurons connected to each other in a specific way. Job of neural network is to learn from given data. The prediction function that neural network must learn can be non-linear. Activation function in artificial neurons helps the neural network to learn non-linear prediction function. Linear prediction Non-linear prediction1 Activation functions (generally) have functional form of , where , weight vector and single training data vector 1. Sigmoid activation function A sigmoid function, . It takes a real-valued number and “squeeze” it into range between 0 and 1. Large negative numbers become and large positive numbers become . Pros: For classification problem it is used as activation of output layer of a neural network. Cons: Saturate and kill gradients: When neuron’s activation saturates at 1 or 0 , the gradient becomes almost zero. Which will make the neuron unable to backpropagate and learn. Outputs are not zero-centered: Since outputs are in range 0 to 1 neurons in next layer will receive data that is not zero centered. Hence gradient of weights during backpropagation will be either all positive or all negative, which can cause undesirable zig-zagging dynamics in gradient updates of weights. When considering gradient added over all training data in a batch this problem is not much severe compared to “Saturate and kill gradients” 2. Tanh activation function A tanh function, . It takes a real-valued number and “squeeze” it into range between -1 and 1. Large negative numbers become and large positive numbers become . Pros: It is preferred over sigmoid because its outputs are zero centered 3. ReLU activation function The Rectified Linear Unit, ReLU is Pros: Greatly increase training speed compared to tanh and sigmoid Less expensive computations compared to tanh and sigmoid Reduces likelihood of the gradient to vanish. Since when , the gradient has constant value. Sparsity: When more , the can be more sparse Cons: Tend to blow up activation (there is no mechanism to constrain the output of the neuron, as itself is the output). Closed ReLU or Dead ReLU: If inputs tend to make than the most of the neurons will always have 0 gradient updates hence closed or dead. 4. Leaky ReLU: It solves the dead ReLU problem. is coefficient of leakage. Leaky ReLU is as follows: 5. Parameterized ReLU or PReLU: Parameterizes coefficient of leakage in Leaky ReLU. 6. Maxout Generalization of ReLU, Leaky ReLU and PReLU. It does not have functional form of , instead it computes function . Pros: Maxout has pros of ReLU but doesn’t have dead ReLU issue Cons: It has twice number of weight parameters to learn and What Activation function should I use ?2 For output layer use sigmoid if classification task For output layer use no activation or Purelin function if regression task For other neurons: Use the ReLU non-linearity if you carefully set learning rates and monitor the fraction of “dead ReLU” in network. Else try Leaky ReLU or Maxout. Or try tanh but it will work worse than ReLU Never use sigmoid Differentiation: Basic formulas: Given and are differentiable functions (the derivative exists), and are any real numbers: Sigmoid function: Tanh function: References: Tensorflow playground link http://cs231n.github.io","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html"},"url":"http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+<body>
+  <div class="container_post">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<header class="masthead">
+  <h1 class="masthead-title--small">
+    <a href="/">Rakesh Malviya</a>
+  </h1>
+</header>      
+<div class="content post">
+  <h1 class="post-title">3. Neural Networks Part 2: Activation functions and differentiation</h1>
+  <div class="meta_wrapper">
+  <div class="post-date">
+    <time>02 Sep 2017</time>
+  </div>
+  <div>
+    
+    <u><a class="tag_list_link" href="/tag/Neural Networks">Neural Networks</a></u>
+    &nbsp;&nbsp;
+    
+    <u><a class="tag_list_link" href="/tag/Machine Learning">Machine Learning</a></u>
+    &nbsp;&nbsp;
+    
+    <u><a class="tag_list_link" href="/tag/Deep Learning">Deep Learning</a></u>
+    &nbsp;&nbsp;
+    
+  </div>
+  <hr>
+<div class="meta_wrapper">  
+  <h2 id="activation-functions">Activation functions</h2>
+
+<p>A neural network is a network of artificial neurons connected to each other in a specific way. Job of neural network is to learn from given data. The prediction function that neural network must learn can be non-linear. Activation function in artificial neurons helps the neural network to learn non-linear prediction function.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Linear prediction</th>
+      <th style="text-align: center">Non-linear prediction<sup><a href="#references">1</a></sup></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="/assets/img/blog/3/3_1_linear.png" alt="" /></td>
+      <td style="text-align: center"><img src="/assets/img/blog/3/3_2_nonlinear.png" alt="" /></td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Activation functions (generally) have functional form of <script type="math/tex">f(u) = f(w^{T}{x} + b)</script>, where <script type="math/tex">u = {b} + \sum_{j=1}^{n} {w_j}\cdot{x_j} = w^{T}{x} + b</script>, <script type="math/tex">w = (w_1,w_2,.......w_n)</script> weight vector  and <script type="math/tex">x= (x_1,x_2,.....x_n)</script> single training data vector</p>
+
+<h4 id="1-sigmoid-activation-function">1. Sigmoid activation function</h4>
+
+<p>A sigmoid function, <script type="math/tex">f(u) = \frac{1}{1+e^{-u}}</script>.  It takes a real-valued number and “squeeze” it into range between 0 and 1. Large negative numbers become <script type="math/tex">\approx 0</script> and large positive numbers become <script type="math/tex">\approx 1</script>.</p>
+
+<h5 id="pros">Pros:</h5>
+<p>For classification problem it is used as activation of output layer of a neural network.</p>
+
+<h5 id="cons">Cons:</h5>
+<ol>
+  <li><strong>Saturate and kill gradients:</strong> When neuron’s activation saturates at 1 or 0 , the gradient becomes almost zero. Which will make the neuron unable to backpropagate and learn.</li>
+  <li><strong>Outputs are not zero-centered:</strong> Since outputs are in range 0 to 1 neurons in next layer will receive data that is not zero centered. Hence gradient of weights <script type="math/tex">w</script> during backpropagation will be either all positive or all negative, which can cause undesirable zig-zagging dynamics in gradient updates of weights. When considering gradient added over all training data in a batch this problem is not much severe compared to “Saturate and kill gradients”</li>
+</ol>
+
+<h4 id="2-tanh-activation-function">2. Tanh activation function</h4>
+<p>A tanh function, <script type="math/tex">f(u) = \frac{e^{u}-e^{-u}}{e^{u}+e^{-u}} = \frac{sinh(u)}{cosh(u)}</script>.  It takes a real-valued number and “squeeze” it into range between -1 and 1. Large negative numbers become <script type="math/tex">\approx -1</script> and large positive numbers become <script type="math/tex">\approx 1</script>.</p>
+
+<h5 id="pros-1">Pros:</h5>
+<p>It is preferred over sigmoid because its outputs are zero centered</p>
+
+<h4 id="3-relu-activation-function">3. ReLU activation function</h4>
+<p>The Rectified Linear Unit, ReLU is <script type="math/tex">f(u) = max(0,u)</script></p>
+
+<h5 id="pros-2">Pros:</h5>
+<ol>
+  <li>Greatly increase training speed compared to tanh and sigmoid</li>
+  <li>Less expensive computations compared to tanh and sigmoid</li>
+  <li>Reduces likelihood of the gradient to vanish. Since when <script type="math/tex">u > 0</script>, the gradient has constant value.</li>
+  <li><strong>Sparsity:</strong> When more <script type="math/tex">% <![CDATA[
+u <= 0 %]]></script>, the <script type="math/tex">f(u)</script> can be more sparse</li>
+</ol>
+
+<h5 id="cons-1">Cons:</h5>
+<ol>
+  <li>Tend to blow up activation (there is no mechanism to constrain the output of the neuron, as <script type="math/tex">u</script> itself is the output).</li>
+  <li><strong>Closed ReLU or Dead ReLU</strong>: If inputs tend to make <script type="math/tex">% <![CDATA[
+u<=0 %]]></script> than the most of the neurons will always have 0 gradient updates hence closed or dead.</li>
+</ol>
+
+<h4 id="4-leaky-relu">4. Leaky ReLU:</h4>
+
+<p>It solves the dead ReLU problem. <script type="math/tex">0.01</script> is coefficient of leakage.  Leaky ReLU is as follows:</p>
+
+<script type="math/tex; mode=display">% <![CDATA[
+f(u)= 
+\begin{cases}
+    x,& \text{if } x > 0\\
+    (0.01)x,              & \text{otherwise}
+\end{cases} %]]></script>
+
+<h4 id="5-parameterized-relu-or-prelu">5. Parameterized ReLU or PReLU:</h4>
+<p>Parameterizes coefficient of leakage <script type="math/tex">\alpha</script> in Leaky ReLU.
+<script type="math/tex">% <![CDATA[
+f(u)= 
+\begin{cases}
+    x,& \text{if } x > 0\\
+    \alpha{x},              & \text{otherwise}
+\end{cases} %]]></script></p>
+
+<h4 id="6-maxout">6. Maxout</h4>
+<p>Generalization of ReLU, Leaky ReLU and PReLU. It does not have functional form of <script type="math/tex">f(u) =  f(w^{T}{x} + b)</script>, instead it computes function <script type="math/tex">max({w'^T}{x} + b',{w^T}{x} + b)</script>.</p>
+
+<h5 id="pros-3">Pros:</h5>
+<p>Maxout has pros of ReLU but doesn’t have dead ReLU issue</p>
+
+<h5 id="cons-2">Cons:</h5>
+<p>It has twice number of weight parameters to learn <script type="math/tex">w'</script> and <script type="math/tex">w</script></p>
+
+<h2 id="what-activation-function-should-i-use-2">What Activation function should I use ?<sup><a href="#references">2</a></sup></h2>
+<ol>
+  <li>For output layer use sigmoid if classification task</li>
+  <li>For output layer use no activation or Purelin function <script type="math/tex">f(u) = u</script> if regression task</li>
+  <li>For other neurons:
+    <ol>
+      <li>Use the ReLU non-linearity if you carefully set learning rates and monitor the fraction of “dead ReLU” in network.</li>
+      <li>Else try Leaky ReLU or Maxout.</li>
+      <li>Or try tanh but it will work worse than ReLU</li>
+      <li>Never use sigmoid</li>
+    </ol>
+  </li>
+</ol>
+
+<h2 id="differentiation">Differentiation:</h2>
+<h4 id="basic-formulas">Basic formulas:</h4>
+<p>Given <script type="math/tex">f(x)</script> and <script type="math/tex">g(x)</script> are differentiable functions (the derivative exists), <script type="math/tex">c</script> and <script type="math/tex">n</script> are any real numbers:
+<script type="math/tex">% <![CDATA[
+\begin{align} 
+\frac{d}{dx}f(x) &= f'(x) \tag{1} \label{eq1} \\
+\frac{d}{dx}g(x) &= g'(x) \tag{2} \label{eq2} \\
+\frac{d}{dx}(f(x) \pm g(x)) &= \frac{d}{dx}f(x) \pm \frac{d}{dx}g(x)  \\
+ &=  f'(x) \pm g'(x) \tag{3}  \label{eq3} \\
+\frac{d}{dx}x^n &= nx^{n-1}  && \text{power-rule} \tag{4} \label{eq4} \\
+\frac{d}{dx} f(x)g(x) &= f'(x)g(x) + f(x)g'(x) && \text{product-rule} \tag{5} \label{eq5} \\ 
+\frac{d}{dx} \Bigg [\frac{f(x)}{g(x)}\Bigg ]  &= \frac{f'(x)g(x)-g'(x)f(x)}{g^{2}(x)} && \text{Quotient Rule} \tag{6} \label{eq6} \\ 
+\frac{d}{dx} f(g(x))  &= f'(g(x))g'(x) && \text{Chain Rule} \tag{7} \label{eq7} \\
+\frac{d}{dx} c &= 0 \tag{8} \label{eq8} \\
+tanh(x) &= \frac{sinh(x)}{cosh(x)}  \tag{9} \label{eq9} \\
+\frac{d}{dx}sinh(x) &= cosh(x)  \tag{10} \label{eq10} \\
+\frac{d}{dx}cosh(x) &= sinh(x)  \tag{11} \label{eq11} \\
+\frac{d}{dx}e^x &= e^x  \tag{12} \label{eq12} \\
+\end{align} %]]></script></p>
+
+<h4 id="sigmoid-function">Sigmoid function:</h4>
+<p><script type="math/tex">% <![CDATA[
+\begin{align} 
+\frac{d}{dx} f(x) &= \frac{d}{dx} \Bigg[ \frac{1}{1+e^{-x}} \Bigg] \\
+&= \frac{d}{dx} \bigg[ \frac{e^x}{1+e^x} \bigg] \\ 
+&= \frac {\bigg(\frac{d}{dx}e^x\bigg)(1+e^x) - \bigg(\frac{d}{dx}(1 + e^x)\bigg)(e^x)}{(1+e^x)^2} &&  \text{by \eqref{eq6}} \\
+&= \frac {\bigg(\frac{d}{dx}e^x\bigg)(1+e^x) - \bigg(\frac{d}{dx} 1 +\frac{d}{dx} e^x\bigg)(e^x)}{(1+e^x)^2} && \text{by \eqref{eq3}} \\
+&= \frac {(e^x)(1+e^x) - (e^x)(e^x)}{(1+e^x)^2} && \text{by \eqref{eq8} and \eqref{eq12}} \\
+&= \bigg[\frac {(e^x)}{(1+e^x)}\bigg]  - \bigg[\frac{(e^x)^2}{(1+e^x)^2}\bigg] \\
+&= \bigg[\frac {e^x}{1+e^x}\bigg]  - \bigg[\frac{e^x}{1+e^x}\bigg]^2 \\
+&= \bigg[\frac {1}{1+e^{-x}}\bigg]  - \bigg[\frac{1}{1+e^{-x}}\bigg]^2 \\
+& = f(x) - (f(x))^2 \\
+& = f(x) (1 - f(x)) \\
+\end{align} %]]></script></p>
+
+<h4 id="tanh-function">Tanh function:</h4>
+<p><script type="math/tex">% <![CDATA[
+\begin{align} 
+\frac{d}{dx} f(x) &= \frac{d}{dx} \Bigg[ \frac{sinh(x)}{cosh(x)} \Bigg] \\
+&= \Bigg[ \frac{\bigg(\frac{d}{dx}sinh(x)\bigg)cosh(x) - \bigg(\frac{d}{dx}cosh(x)\bigg)sinh(x)}{(cosh(x))^2} \Bigg] && \text{by \eqref{eq6}} \\
+& = \frac{(cosh(x))^2 - (sinh(x))^2}{(cosh(x))^2} && \text{by \eqref{eq10} and \eqref{eq11}} \\ 
+& = 1 - \bigg(\frac{sinh(x)}{cosh(x)}\bigg)^2 \\
+& = 1 - (tanh(x))^2 && \text{by \eqref{eq9}} \\
+& = 1 - (f(x))^2 \\
+\end{align} %]]></script></p>
+
+<h2 id="references">References:</h2>
+<ol>
+  <li>Tensorflow playground <a href="http://playground.tensorflow.org">link</a></li>
+  <li>http://cs231n.github.io</li>
+</ol>
+
+</div>
+
+  </div>
+  <div class="footer">
+  |<a href="/"> ~ </a>|
+ </div> 
+</body>
+</html>

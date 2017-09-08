@@ -1,0 +1,39 @@
+---
+layout: default
+---
+<header class="masthead">        
+  <h1 class="masthead-title">
+    <a href="{{ site.baseurl }}/">{{ site.name }}</a>
+  </h1>
+  <nav class="masthead-nav">
+    {% for nav in site.nav %}
+    <a href="{{ nav.href }}">{{ nav.name }}</a>
+    {% endfor %}
+  </nav>
+</header>
+<div class="content list">
+{% if site.posts.size == 0 %}
+  <h2>No post found</h2>
+{% else %}
+{% endif %}
+{% for post in paginator.posts %}
+  <div class="list-item">
+    <h2 class="list-post-title">
+      <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a>
+    </h2>
+  {% if post.date %}{% include meta_index.md %}{% endif %}
+  </div>
+{% endfor %}
+<div class="pagination">
+  {% if paginator.previous_page %}
+    <a href="{{ paginator.previous_page_path }}" class="previous">..</a>
+  {% else %}
+    <span class="previous">|</span>
+  {% endif %}
+  <span class="page_number ">{{ paginator.page }}:{{ paginator.total_pages }}</span>
+  {% if paginator.next_page %}
+    <a href="{{ paginator.next_page_path }}" class="next">/next</a>
+  {% else %}
+    <span class="next "><a href="/">~</a> |</span>
+  {% endif %}
+</div>
