@@ -6,7 +6,7 @@
   <title>2. Neural Networks Part 1: Logistic Regression (Least Square Error)</title>
   <link href="/fonts.css" rel="stylesheet" charset="utf-8">
   <link rel="stylesheet" href="/style.css">
-  <!-- Begin Jekyll SEO tag v2.2.3 -->
+  <!-- Begin Jekyll SEO tag v2.3.0 -->
 <title>Neural Networks Part 1: Logistic Regression (Least Square Error) | Rakesh Malviya</title>
 <meta property="og:title" content="Neural Networks Part 1: Logistic Regression (Least Square Error)" />
 <meta property="og:locale" content="en_US" />
@@ -18,7 +18,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2017-08-25T00:00:00+05:30" />
 <script type="application/ld+json">
-{"@context":"http://schema.org","@type":"BlogPosting","headline":"Neural Networks Part 1: Logistic Regression (Least Square Error)","datePublished":"2017-08-25T00:00:00+05:30","dateModified":"2017-08-25T00:00:00+05:30","description":"Required Learning: Linear regression basics link We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units. Establish notations for future use1 to denote the ith “input ” of training data to denote the ith “output” or target of training data Pair is called a training example The dataset that we’ll be using to learn—a list of m training examples — is called a training set Each in training set can have features such that is a vector In current setup of logistic regression is scalar value Note that the superscript “(i)” in the notation is simply an index into the training set, and has nothing to do with exponentiation. Fig: Single neuron Let , where is predicted output is activation function , for training example, where is bias of the neuron. weights or training parameters we need to learn We will apply gradient descent to minimize the squared error cost function , also called least square error \\begin{align} J = \\sum_{i=1}^{m} {\\dfrac{1}{2}}(y^{(i)} - y’^{(i)})^2 \\tag{1} \\label{eq1} \\end{align} We will use Sigmoid function as activation function, i.e. \\begin{align} \\sigma(u^{(i)}) = \\dfrac{1}{1+e^{-u^{(i)}}} = f(u^{(i)}) = y’^{(i)} \\tag{2} \\label{eq2} \\end{align} Derivatives \\begin{align} \\frac{\\partial\\sigma(u)}{\\partial{u}} = \\sigma(u)\\cdot(1 - \\sigma(u)) \\tag{3} \\label{eq3} \\end{align} \\begin{align} \\frac{\\partial{J}}{\\partial{y’^{(i)}}} = y’^{(i)} - y^{(i)} \\tag{4} \\label{eq4} \\end{align} \\begin{align} \\frac{\\partial{u^{(i)}}}{\\partial{w_j}} = x_j^{(i)} \\tag{5} \\label{eq5} \\end{align} \\begin{align} \\frac{\\partial{u^{(i)}}}{\\partial{b}} = 1 \\tag{6} \\label{eq6} \\end{align} Gradient Descent To learn and parameter so that is minimum. We will find and Note: is our loss function and is for indexing Since, is function of , is function of and is function of by . Using chain rule of differentiation So during the training update equation for over all is as follows: Similarly: Update equation for bias is as follows: Training Steps: Choose an initial vector of parameters , bias and learning rate . Repeat for predifined epoch such that approximate minimum loss is obtained: Evaluate and store for all training examples by using equation Update bias, For in : Update, here is the python implementation of this article. References: http://cs229.stanford.edu/notes Previous Posts: “1. Word2vec Part 1: Basics”","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html"},"url":"http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html"}</script>
+{"name":null,"description":"Required Learning: Linear regression basics link We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units. Establish notations for future use1 to denote the ith “input ” of training data to denote the ith “output” or target of training data Pair is called a training example The dataset that we’ll be using to learn—a list of m training examples — is called a training set Each in training set can have features such that is a vector In current setup of logistic regression is scalar value Note that the superscript “(i)” in the notation is simply an index into the training set, and has nothing to do with exponentiation. Fig: Single neuron Let , where is predicted output is activation function , for training example, where is bias of the neuron. weights or training parameters we need to learn We will apply gradient descent to minimize the squared error cost function , also called least square error \\begin{align} J = \\sum_{i=1}^{m} {\\dfrac{1}{2}}(y^{(i)} - y’^{(i)})^2 \\tag{1} \\label{eq1} \\end{align} We will use Sigmoid function as activation function, i.e. \\begin{align} \\sigma(u^{(i)}) = \\dfrac{1}{1+e^{-u^{(i)}}} = f(u^{(i)}) = y’^{(i)} \\tag{2} \\label{eq2} \\end{align} Derivatives \\begin{align} \\frac{\\partial\\sigma(u)}{\\partial{u}} = \\sigma(u)\\cdot(1 - \\sigma(u)) \\tag{3} \\label{eq3} \\end{align} \\begin{align} \\frac{\\partial{J}}{\\partial{y’^{(i)}}} = y’^{(i)} - y^{(i)} \\tag{4} \\label{eq4} \\end{align} \\begin{align} \\frac{\\partial{u^{(i)}}}{\\partial{w_j}} = x_j^{(i)} \\tag{5} \\label{eq5} \\end{align} \\begin{align} \\frac{\\partial{u^{(i)}}}{\\partial{b}} = 1 \\tag{6} \\label{eq6} \\end{align} Gradient Descent To learn and parameter so that is minimum. We will find and Note: is our loss function and is for indexing Since, is function of , is function of and is function of by . Using chain rule of differentiation So during the training update equation for over all is as follows: Similarly: Update equation for bias is as follows: Training Steps: Choose an initial vector of parameters , bias and learning rate . Repeat for predifined epoch such that approximate minimum loss is obtained: Evaluate and store for all training examples by using equation Update bias, For in : Update, here is the python implementation of this article. References: http://cs229.stanford.edu/notes Previous Posts: “1. Word2vec Part 1: Basics”","author":null,"@type":"BlogPosting","url":"http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html","image":null,"publisher":null,"headline":"Neural Networks Part 1: Logistic Regression (Least Square Error)","dateModified":"2017-08-25T00:00:00+05:30","datePublished":"2017-08-25T00:00:00+05:30","sameAs":null,"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
   </head>
@@ -33,22 +33,16 @@
 <div class="content post">
   <h1 class="post-title">2. Neural Networks Part 1: Logistic Regression (Least Square Error)</h1>
   <div class="meta_wrapper">
-  <div class="post-date">
-    <time>25 Aug 2017</time>
-  </div>
-  <div>
-    
-    <u><a class="tag_list_link" href="/tag/Neural Networks">Neural Networks</a></u>
-    &nbsp;&nbsp;
-    
-    <u><a class="tag_list_link" href="/tag/Machine Learning">Machine Learning</a></u>
-    &nbsp;&nbsp;
-    
-    <u><a class="tag_list_link" href="/tag/Deep Learning">Deep Learning</a></u>
-    &nbsp;&nbsp;
-    
-  </div>
-  <hr>
+  <span class="post-date">25 Aug 2017</span>
+  
+  
+    <a href="/tags/#neural-networks" class="post-tag">Neural Networks</a>
+  
+    <a href="/tags/#machine-learning" class="post-tag">Machine Learning</a>
+  
+    <a href="/tags/#deep-learning" class="post-tag">Deep Learning</a>
+  
+  
 <div class="meta_wrapper">  
   <p>Required Learning: Linear regression basics <a href="http://www.holehouse.org/mlclass/01_02_Introduction_regression_analysis_and_gr.html">link</a></p>
 

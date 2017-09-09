@@ -26,6 +26,10 @@ nav:
  - name: "contact"
    href: "https://sites.google.com/site/rakeshmalviyasite/"
 
+ - name: "Tags"
+   href: "/tags/" 
+
+tag_page: "/tags/"
 # Sass
 sass:
  style: :compressed
