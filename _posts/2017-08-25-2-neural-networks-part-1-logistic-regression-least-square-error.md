@@ -1,6 +1,7 @@
 ---
 title: '2. Neural Networks Part 1: Logistic Regression (Least Square Error)'
 layout: post
+crosspost_to_medium: true
 tags:
 - Neural Networks
 - Machine Learning

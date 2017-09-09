@@ -26,13 +26,14 @@ nav:
  - name: "contact"
    href: "https://sites.google.com/site/rakeshmalviyasite/" 
 
-tag_page: '/tags/'
+tag_page: '/tags'
 # Sass
 sass:
  style: :compressed
 
 # Excerpt
 excerpt_separator: <!-ex->
+
 
 #Gems
 gems: [jekyll-paginate,jekyll-seo-tag]

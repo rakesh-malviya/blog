@@ -1,6 +1,7 @@
 ---
 title: '1. Word2vec Part 1: Basics'
 layout: post
+crosspost_to_medium: true
 tags:
 - NLP
 ---
