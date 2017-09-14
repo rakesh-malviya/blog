@@ -120,7 +120,7 @@ Training Steps:
 	3. 	For $$ j = 1,2,.....n $$ in $$w$$ : 
 			1. Update, $$w_j = w_j - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} $$
 
-[here](https://github.com/rakesh-malviya/blog/blob/master/code/notebooks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of this article.
+[here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of this article.
 
 ## References:
 1. http://cs229.stanford.edu/notes

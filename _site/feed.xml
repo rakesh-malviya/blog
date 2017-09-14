@@ -282,7 +282,7 @@ b &amp;= b - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/blog/blob/master/code/notebooks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;here&lt;/a&gt; is the python implementation of this article.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;here&lt;/a&gt; is the python implementation of this article.&lt;/p&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
 &lt;ol&gt;
