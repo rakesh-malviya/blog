@@ -6,6 +6,42 @@
 		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>4. Neural Networks Part 3: Feedforward neural network</title>
+        <description>&lt;p&gt;&lt;strong&gt;Required Learning:&lt;/strong&gt; My previous posts on Neural networks&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Feedforward neural network&lt;/strong&gt; is neural network architecture consisting of layers of artificial neurons such that:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Each neuron in a layer is connected to all neurons of previous layer, i.e. its input is output of all neurons of previous layers.&lt;/li&gt;
+  &lt;li&gt;Last layer is called output layer and returns &lt;script type=&quot;math/tex&quot;&gt;y'&lt;/script&gt;, predicted y&lt;/li&gt;
+  &lt;li&gt;Other layers are called hidden layers&lt;/li&gt;
+  &lt;li&gt;first hidden layer’s input is &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; such that &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is a vector &lt;script type=&quot;math/tex&quot;&gt;(x_1,x_2,x_3,..... x_n)&lt;/script&gt; of size &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;. &lt;strong&gt;Note:&lt;/strong&gt; Some people consider an imaginary input layer of size &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt; which connects to first hidden layer. If you haven’t read this anywhere just forget this note. For others I find this way of representing layers easier when will be implementing classes for different types of neural network layers.&lt;/li&gt;
+  &lt;li&gt;We can have zero to any number of hidden layers. In case of zero hidden layers our network for binary classification task will be same as logistic regression descrsibed in previous post. Think … 💭 Since we have only single artificial neuron of output layer in the whole neural network.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/4/4_1_neuralnetwork.svg&quot; alt=&quot;&quot; title=&quot;Feedforward neural network&quot; /&gt;
+&lt;i&gt;&lt;center&gt;Fig 1 : Feedforward neural network&lt;/center&gt;&lt;/i&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;establish-notations&quot;&gt;Establish Notations:&lt;/h4&gt;
+&lt;ol&gt;
+  &lt;li&gt;For notational convenience we have removed superscript (i) for &lt;script type=&quot;math/tex&quot;&gt;i^{th}&lt;/script&gt; training example &lt;script type=&quot;math/tex&quot;&gt;(x,y)&lt;/script&gt;. So &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is single training input, &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is expected output and &lt;script type=&quot;math/tex&quot;&gt;y'&lt;/script&gt; is predicted output&lt;/li&gt;
+  &lt;li&gt;Input &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is such that &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is a vector &lt;script type=&quot;math/tex&quot;&gt;(x_1,x_2,x_3,..... x_n)&lt;/script&gt; of size &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;We have &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; hidden layers. Output layer is denoted by &lt;script type=&quot;math/tex&quot;&gt;l+1&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;o&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Each layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; has following attributes weight matrix &lt;script type=&quot;math/tex&quot;&gt;W^l&lt;/script&gt;, output vector &lt;script type=&quot;math/tex&quot;&gt;h^l&lt;/script&gt; and bias vector $$b^l$.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;I am proposing below notations for your easy of understanding the equations in upcoming sections. Also check Fig 1 above&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;let output layer has size &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; i.e &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; artificial neurons. Layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; and Layer &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;We will use &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; to denote individual neurons in layer &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; for layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; for output layer &lt;script type=&quot;math/tex&quot;&gt;o&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;For layer  &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; weight matrix &lt;script type=&quot;math/tex&quot;&gt;W^l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;[qxp]&lt;/script&gt; and for ouput layer &lt;script type=&quot;math/tex&quot;&gt;W^o&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;[rxq]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;For layer  &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt; vectors &lt;script type=&quot;math/tex&quot;&gt;h^{l-1}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b^{l-1}&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; and  for layer  &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; vectors &lt;script type=&quot;math/tex&quot;&gt;h^l&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b^l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; and for output layer &lt;script type=&quot;math/tex&quot;&gt;o&lt;/script&gt; vectors &lt;script type=&quot;math/tex&quot;&gt;h^o&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;b^o&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;j^{th}&lt;/script&gt; Artificial neuron in layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;  has bias &lt;script type=&quot;math/tex&quot;&gt;b_j^l&lt;/script&gt; (scalar), output &lt;script type=&quot;math/tex&quot;&gt;h_j^l&lt;/script&gt;(scalar),  weight vector &lt;script type=&quot;math/tex&quot;&gt;W_{j:}^l&lt;/script&gt; , i.e. &lt;script type=&quot;math/tex&quot;&gt;j^{th}&lt;/script&gt; row of weight matrix &lt;script type=&quot;math/tex&quot;&gt;W^l&lt;/script&gt; for layer l. &lt;em&gt;It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output&lt;/em&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+				<pubDate>Sun, 17 Sep 2017 00:00:00 +0530</pubDate>
+				<link>http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html</link>
+				<guid isPermaLink="true">http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html</guid>
+			</item>
+		
+			<item>
 				<title>3. Neural Networks Part 2: Activation functions and differentiation</title>
         <description>&lt;h2 id=&quot;activation-functions&quot;&gt;Activation functions&lt;/h2&gt;
 
@@ -172,7 +208,7 @@ tanh(x) &amp;= \frac{sinh(x)}{cosh(x)}  \tag{9} \label{eq9} \\
 
 &lt;p&gt;We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units.&lt;/p&gt;
 
-&lt;h3 id=&quot;establish-notations-for-future-use1&quot;&gt;Establish notations for future use&lt;sup&gt;&lt;a href=&quot;#references&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/h3&gt;
+&lt;h4 id=&quot;establish-notations-for-future-use1&quot;&gt;Establish notations for future use&lt;sup&gt;&lt;a href=&quot;#references&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;x^{(i)}&lt;/script&gt; to denote the i&lt;sup&gt;th&lt;/sup&gt; “input ” of training data&lt;/li&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;y^{(i)}&lt;/script&gt; to denote the i&lt;sup&gt;th&lt;/sup&gt; “output” or target of training data&lt;/li&gt;
@@ -199,8 +235,10 @@ where&lt;/p&gt;
 &lt;p&gt;We will apply gradient descent to minimize the squared error cost function &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;, also called least square error&lt;/p&gt;
 
 &lt;p&gt;\begin{align}
-J = \sum_{i=1}^{m} {\dfrac{1}{2}}(y^{(i)} - y’^{(i)})^2 \tag{1} \label{eq1}
+J = \frac{1}{2m}\sum_{i=1}^{m} (y^{(i)} - y’^{(i)})^2 \tag{1} \label{eq1}
 \end{align}&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; term &lt;script type=&quot;math/tex&quot;&gt;2&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;\frac{1}{2m}&lt;/script&gt; makes the derivative of J much simpler as you will see later. With &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;\frac{1}{2m}&lt;/script&gt; loss function value &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; does not depend on the size of training data i.e. &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; which makes it easy for comparison for different values of &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; or batch size in case of &lt;strong&gt;mini-batch stochatic gradient&lt;/strong&gt; that you will see later sections.&lt;/p&gt;
 
 &lt;p&gt;We will use Sigmoid function as activation function, i.e. &lt;script type=&quot;math/tex&quot;&gt;\sigma(u)&lt;/script&gt;
 \begin{align}
@@ -232,38 +270,45 @@ J = \sum_{i=1}^{m} {\dfrac{1}{2}}(y^{(i)} - y’^{(i)})^2 \tag{1} \label{eq1}
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align} 
-\frac{\partial{J}}{\partial{w_j}} &amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{w_j}}   &amp;&amp; \text{by \eqref{eq1}} \\
-&amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  \\
-&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  &amp;&amp; \text{by \eqref{eq4}} \\
-&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  &amp;&amp; \text{by \eqref{eq2} and \eqref{eq3}} \\
-\frac{\partial{J}}{\partial{w_j}} &amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} &amp;&amp; \text{by \eqref{eq5}} \tag{7} \label{eq7}
+\frac{\partial{J}}{\partial{w_j}} &amp;= \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{w_j}}   &amp;&amp; \text{by \eqref{eq1}} \\
+&amp;= \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  \\
+&amp;= \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  &amp;&amp; \text{by \eqref{eq4}} \\
+&amp;= \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  &amp;&amp; \text{by \eqref{eq2} and \eqref{eq3}} \\
+\frac{\partial{J}}{\partial{w_j}} &amp;= \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} &amp;&amp; \text{by \eqref{eq5}} \tag{7} \label{eq7}
 \end{align} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Sum (&lt;script type=&quot;math/tex&quot;&gt;\sum_{i=1}^{m}&lt;/script&gt;) and averaging (&lt;script type=&quot;math/tex&quot;&gt;\frac{1}{m}&lt;/script&gt;)of gradient is needed for following reasons:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Summing of individual gradients on training examples makes gradient update smoother&lt;/li&gt;
+  &lt;li&gt;Without averaging the learning rate depends on the size of training data &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; or batch size&lt;/li&gt;
+  &lt;li&gt;With averaging the gradient magnitude is independent of the batch size. This allows comparison when using different batch sizes or training data size &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt;.&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;So during the training update equation for &lt;script type=&quot;math/tex&quot;&gt;w_j&lt;/script&gt; over all &lt;script type=&quot;math/tex&quot;&gt;j = 1 ..... n&lt;/script&gt; is as follows:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align} 
 w_j &amp;= w_j - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
-&amp;= w_j - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} &amp;&amp; \text{by \eqref{eq7}}
+&amp;= w_j - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} &amp;&amp; \text{by \eqref{eq7}}
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;Similarly:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align} 
-\frac{\partial{J}}{\partial{b}} &amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{b}}   &amp;&amp; \text{by \eqref{eq1}} \\
-&amp;= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  \\
-&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  &amp;&amp; \text{by \eqref{eq4}} \\
-&amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  &amp;&amp; \text{by \eqref{eq2} and \eqref{eq3}} \\
-\frac{\partial{J}}{\partial{b}} &amp;= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) &amp;&amp; \text{by \eqref{eq6}} \tag{8} \label{eq8}
+\frac{\partial{J}}{\partial{b}} &amp;=  \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{b}}   &amp;&amp; \text{by \eqref{eq1}} \\
+&amp;=  \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  \\
+&amp;=  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  &amp;&amp; \text{by \eqref{eq4}} \\
+&amp;=  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  &amp;&amp; \text{by \eqref{eq2} and \eqref{eq3}} \\
+\frac{\partial{J}}{\partial{b}} &amp;=  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) &amp;&amp; \text{by \eqref{eq6}} \tag{8} \label{eq8}
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;Update equation for bias &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; is as follows:&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align} 
-b &amp;= b - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
-&amp;= b - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) &amp;&amp; \text{by \eqref{eq8}}
+b &amp;= b - \eta \cdot \frac{\partial{J}}{\partial{b}} \\
+&amp;= b - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) &amp;&amp; \text{by \eqref{eq8}}
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;Training Steps:&lt;/p&gt;
@@ -272,17 +317,42 @@ b &amp;= b - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
   &lt;li&gt;Repeat for predifined epoch such that approximate minimum &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; loss is obtained:
     &lt;ol&gt;
       &lt;li&gt;Evaluate and store &lt;script type=&quot;math/tex&quot;&gt;y'^{(i)}&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;i = 1,2,3...m&lt;/script&gt; training examples by using equation &lt;script type=&quot;math/tex&quot;&gt;\eqref{eq2}&lt;/script&gt;&lt;/li&gt;
-      &lt;li&gt;Update bias, &lt;script type=&quot;math/tex&quot;&gt;b = b - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})&lt;/script&gt;&lt;/li&gt;
+      &lt;li&gt;Update bias, &lt;script type=&quot;math/tex&quot;&gt;b = b - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})&lt;/script&gt;&lt;/li&gt;
       &lt;li&gt;For &lt;script type=&quot;math/tex&quot;&gt;j = 1,2,.....n&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; :
         &lt;ol&gt;
-          &lt;li&gt;Update, &lt;script type=&quot;math/tex&quot;&gt;w_j = w_j - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)}&lt;/script&gt;&lt;/li&gt;
+          &lt;li&gt;Update, &lt;script type=&quot;math/tex&quot;&gt;w_j = w_j - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)}&lt;/script&gt;&lt;/li&gt;
         &lt;/ol&gt;
       &lt;/li&gt;
     &lt;/ol&gt;
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;here&lt;/a&gt; is the python implementation of this article.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;here&lt;/a&gt; is the python implementation of the above article.&lt;/p&gt;
+
+&lt;h4 id=&quot;stochastic-gradient-descent-sgd&quot;&gt;Stochastic gradient descent, SGD&lt;/h4&gt;
+&lt;p&gt;When training data size &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is large we choose &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
+m' &lt; m %]]&gt;&lt;/script&gt;  of batch size. We divide our training data into batches of size &lt;script type=&quot;math/tex&quot;&gt;m'&lt;/script&gt;. We update weights and bias for each batch as follows:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;Choose an initial vector of parameters  &lt;script type=&quot;math/tex&quot;&gt;w = (w_1,......w_n)&lt;/script&gt;, bias &lt;script type=&quot;math/tex&quot;&gt;b&lt;/script&gt; and learning rate &lt;script type=&quot;math/tex&quot;&gt;\eta&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;Divide training data into batches of size &lt;script type=&quot;math/tex&quot;&gt;m'&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;Repeat for predifined epoch such that approximate minimum &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt; loss is obtained:
+    &lt;ol&gt;
+      &lt;li&gt;Repeat for each batch:
+        &lt;ol&gt;
+          &lt;li&gt;Evaluate and store &lt;script type=&quot;math/tex&quot;&gt;y'^{(i)}&lt;/script&gt; for all &lt;script type=&quot;math/tex&quot;&gt;i = 1,2,3...m&lt;/script&gt; training examples by using equation &lt;script type=&quot;math/tex&quot;&gt;\eqref{eq2}&lt;/script&gt;&lt;/li&gt;
+          &lt;li&gt;Update bias, &lt;script type=&quot;math/tex&quot;&gt;b = b - \eta \cdot  \frac{1}{m'}\sum_{i=1}^{m'}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})&lt;/script&gt;&lt;/li&gt;
+          &lt;li&gt;For &lt;script type=&quot;math/tex&quot;&gt;j = 1,2,.....n&lt;/script&gt; in &lt;script type=&quot;math/tex&quot;&gt;w&lt;/script&gt; : Update, &lt;script type=&quot;math/tex&quot;&gt;w_j = w_j - \eta \cdot  \frac{1}{m'}\sum_{i=1}^{m'}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)}&lt;/script&gt;&lt;/li&gt;
+        &lt;/ol&gt;
+      &lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h5 id=&quot;advantages-of-sgd&quot;&gt;Advantages of SGD&lt;/h5&gt;
+&lt;ol&gt;
+  &lt;li&gt;Much faster than normal gradient descent&lt;/li&gt;
+  &lt;li&gt;Better choice when whole training data cannot fit into the RAM (available memory) of the system&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;h2 id=&quot;references&quot;&gt;References:&lt;/h2&gt;
 &lt;ol&gt;

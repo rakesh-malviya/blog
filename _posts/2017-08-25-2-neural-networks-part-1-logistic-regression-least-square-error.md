@@ -12,7 +12,7 @@ Required Learning: Linear regression basics [link](http://www.holehouse.org/mlcl
 
 We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units.
 
-### Establish notations for future use<sup>[1](#references)</sup>
+#### Establish notations for future use<sup>[1](#references)</sup>
 1. $$x^{(i)}$$ to denote the i<sup>th</sup> “input ” of training data
 2. $$y^{(i)}$$ to denote the i<sup>th</sup> “output” or target of training data
 3. Pair $$(x^{(i)}, y^{(i)})$$ is called a training example
@@ -38,9 +38,10 @@ where
 We will apply gradient descent to minimize the squared error cost function $$J$$, also called least square error
 
 \begin{align}
-J = \sum_{i=1}^{m} {\dfrac{1}{2}}(y^{(i)} - y'^{(i)})^2 \tag{1} \label{eq1}
+J = \frac{1}{2m}\sum_{i=1}^{m} (y^{(i)} - y'^{(i)})^2 \tag{1} \label{eq1}
 \end{align}
 
+**Note:** term $$2$$ in $$\frac{1}{2m}$$ makes the derivative of J much simpler as you will see later. With $$m$$ in $$\frac{1}{2m}$$ loss function value $$J$$ does not depend on the size of training data i.e. $$m$$ which makes it easy for comparison for different values of $$m$$ or batch size in case of **mini-batch stochatic gradient** that you will see later sections.
 
 We will use Sigmoid function as activation function, i.e. $$\sigma(u)$$
 \begin{align}
@@ -72,20 +73,25 @@ Since, $$J$$ is function of $$y'^{(i)}$$, $$y'^{(i)}$$ is function of $$u^{(i)}$
 
 $$
 \begin{align} 
-\frac{\partial{J}}{\partial{w_j}} &= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{w_j}}   && \text{by \eqref{eq1}} \\
-&= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  \\
-&= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  && \text{by \eqref{eq4}} \\
-&= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  && \text{by \eqref{eq2} and \eqref{eq3}} \\
-\frac{\partial{J}}{\partial{w_j}} &= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} && \text{by \eqref{eq5}} \tag{7} \label{eq7}
+\frac{\partial{J}}{\partial{w_j}} &= \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{w_j}}   && \text{by \eqref{eq1}} \\
+&= \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  \\
+&= \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  && \text{by \eqref{eq4}} \\
+&= \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{w_j}}  && \text{by \eqref{eq2} and \eqref{eq3}} \\
+\frac{\partial{J}}{\partial{w_j}} &= \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} && \text{by \eqref{eq5}} \tag{7} \label{eq7}
 \end{align}
 $$
+
+**Note:** Sum ($$\sum_{i=1}^{m}$$) and averaging ($$\frac{1}{m}$$)of gradient is needed for following reasons:
+1. Summing of individual gradients on training examples makes gradient update smoother
+2. Without averaging the learning rate depends on the size of training data $$m$$ or batch size
+3. With averaging the gradient magnitude is independent of the batch size. This allows comparison when using different batch sizes or training data size $$m$$.
 
 So during the training update equation for $$w_j$$ over all $$j = 1 ..... n$$ is as follows:
 
 $$
 \begin{align} 
 w_j &= w_j - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
-&= w_j - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} && \text{by \eqref{eq7}}
+&= w_j - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} && \text{by \eqref{eq7}}
 \end{align}
 $$
 
@@ -93,11 +99,11 @@ Similarly:
 
 $$
 \begin{align} 
-\frac{\partial{J}}{\partial{b}} &= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{b}}   && \text{by \eqref{eq1}} \\
-&= \sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  \\
-&= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  && \text{by \eqref{eq4}} \\
-&= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  && \text{by \eqref{eq2} and \eqref{eq3}} \\
-\frac{\partial{J}}{\partial{b}} &= \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) && \text{by \eqref{eq6}} \tag{8} \label{eq8}
+\frac{\partial{J}}{\partial{b}} &=  \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{b}}   && \text{by \eqref{eq1}} \\
+&=  \frac{1}{m}\sum_{i=1}^{m}  \frac{\partial{J}}{\partial{y'^{(i)}}} \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  \\
+&=  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  \frac{\partial{y'^{(i)}}}{\partial{u^{(i)}}} \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  && \text{by \eqref{eq4}} \\
+&=  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot    \frac{\partial{u^{(i)}}}{\partial{b}}  && \text{by \eqref{eq2} and \eqref{eq3}} \\
+\frac{\partial{J}}{\partial{b}} &=  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) && \text{by \eqref{eq6}} \tag{8} \label{eq8}
 \end{align}
 $$
 
@@ -105,8 +111,8 @@ Update equation for bias $$b$$ is as follows:
 
 $$
 \begin{align} 
-b &= b - \eta \cdot \frac{\partial{J}}{\partial{w_j}} \\
-&= b - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) && \text{by \eqref{eq8}}
+b &= b - \eta \cdot \frac{\partial{J}}{\partial{b}} \\
+&= b - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) && \text{by \eqref{eq8}}
 \end{align}
 $$
 
@@ -116,11 +122,25 @@ Training Steps:
 1. Choose an initial vector of parameters  $$w = (w_1,......w_n)$$, bias $$b$$ and learning rate $$\eta$$.
 2. Repeat for predifined epoch such that approximate minimum $$J$$ loss is obtained:
 	1. Evaluate and store $$y'^{(i)}$$ for all $$i = 1,2,3...m$$ training examples by using equation $$\eqref{eq2}$$
-	2. Update bias, $$b = b - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})$$			
+	2. Update bias, $$b = b - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})$$			
 	3. 	For $$ j = 1,2,.....n $$ in $$w$$ : 
-			1. Update, $$w_j = w_j - \eta \cdot \sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} $$
+			1. Update, $$w_j = w_j - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} $$
 
-[here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of this article.
+[here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of the above article.
+
+#### Stochastic gradient descent, SGD
+When training data size $$m$$ is large we choose $$m' < m$$  of batch size. We divide our training data into batches of size $$m'$$. We update weights and bias for each batch as follows:
+1. Choose an initial vector of parameters  $$w = (w_1,......w_n)$$, bias $$b$$ and learning rate $$\eta$$.
+2. Divide training data into batches of size $$m'$$
+3. Repeat for predifined epoch such that approximate minimum $$J$$ loss is obtained:
+   1. Repeat for each batch:
+        1. Evaluate and store $$y'^{(i)}$$ for all $$i = 1,2,3...m$$ training examples by using equation $$\eqref{eq2}$$
+        2. Update bias, $$b = b - \eta \cdot  \frac{1}{m'}\sum_{i=1}^{m'}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})$$
+        3. For $$ j = 1,2,.....n $$ in $$w$$ : Update, $$w_j = w_j - \eta \cdot  \frac{1}{m'}\sum_{i=1}^{m'}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} $$
+       
+##### Advantages of SGD
+1. Much faster than normal gradient descent
+2. Better choice when whole training data cannot fit into the RAM (available memory) of the system
 
 ## References:
 1. http://cs229.stanford.edu/notes

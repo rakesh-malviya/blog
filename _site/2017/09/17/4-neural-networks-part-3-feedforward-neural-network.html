@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>4. Neural Networks Part 3: Feedforward neural network</title>
+  <link href="/fonts.css" rel="stylesheet" charset="utf-8">
+  <link rel="stylesheet" href="/style.css">
+  <!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>Neural Networks Part 3: Feedforward neural network | Rakesh Malviya</title>
+<meta property="og:title" content="Neural Networks Part 3: Feedforward neural network" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Required Learning: My previous posts on Neural networks Feedforward neural network is neural network architecture consisting of layers of artificial neurons such that: Each neuron in a layer is connected to all neurons of previous layer, i.e. its input is output of all neurons of previous layers. Last layer is called output layer and returns , predicted y Other layers are called hidden layers first hidden layer’s input is such that is a vector of size . Note: Some people consider an imaginary input layer of size which connects to first hidden layer. If you haven’t read this anywhere just forget this note. For others I find this way of representing layers easier when will be implementing classes for different types of neural network layers. We can have zero to any number of hidden layers. In case of zero hidden layers our network for binary classification task will be same as logistic regression descrsibed in previous post. Think … 💭 Since we have only single artificial neuron of output layer in the whole neural network. Fig 1 : Feedforward neural network Establish Notations: For notational convenience we have removed superscript (i) for training example . So is single training input, is expected output and is predicted output Input is such that is a vector of size . We have hidden layers. Output layer is denoted by or Each layer has following attributes weight matrix , output vector and bias vector $$b^l$. I am proposing below notations for your easy of understanding the equations in upcoming sections. Also check Fig 1 above let output layer has size i.e artificial neurons. Layer has size and Layer has size We will use to denote individual neurons in layer , for layer and for output layer . You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think. For layer weight matrix has size and for ouput layer has size For layer vectors and has size and for layer vectors and has size and for output layer vectors and has size Artificial neuron in layer has bias (scalar), output (scalar), weight vector , i.e. row of weight matrix for layer l. It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output." />
+<meta property="og:description" content="Required Learning: My previous posts on Neural networks Feedforward neural network is neural network architecture consisting of layers of artificial neurons such that: Each neuron in a layer is connected to all neurons of previous layer, i.e. its input is output of all neurons of previous layers. Last layer is called output layer and returns , predicted y Other layers are called hidden layers first hidden layer’s input is such that is a vector of size . Note: Some people consider an imaginary input layer of size which connects to first hidden layer. If you haven’t read this anywhere just forget this note. For others I find this way of representing layers easier when will be implementing classes for different types of neural network layers. We can have zero to any number of hidden layers. In case of zero hidden layers our network for binary classification task will be same as logistic regression descrsibed in previous post. Think … 💭 Since we have only single artificial neuron of output layer in the whole neural network. Fig 1 : Feedforward neural network Establish Notations: For notational convenience we have removed superscript (i) for training example . So is single training input, is expected output and is predicted output Input is such that is a vector of size . We have hidden layers. Output layer is denoted by or Each layer has following attributes weight matrix , output vector and bias vector $$b^l$. I am proposing below notations for your easy of understanding the equations in upcoming sections. Also check Fig 1 above let output layer has size i.e artificial neurons. Layer has size and Layer has size We will use to denote individual neurons in layer , for layer and for output layer . You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think. For layer weight matrix has size and for ouput layer has size For layer vectors and has size and for layer vectors and has size and for output layer vectors and has size Artificial neuron in layer has bias (scalar), output (scalar), weight vector , i.e. row of weight matrix for layer l. It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output." />
+<link rel="canonical" href="http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html" />
+<meta property="og:url" content="http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html" />
+<meta property="og:site_name" content="Rakesh Malviya" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-09-17T00:00:00+05:30" />
+<script type="application/ld+json">
+{"name":null,"description":"Required Learning: My previous posts on Neural networks Feedforward neural network is neural network architecture consisting of layers of artificial neurons such that: Each neuron in a layer is connected to all neurons of previous layer, i.e. its input is output of all neurons of previous layers. Last layer is called output layer and returns , predicted y Other layers are called hidden layers first hidden layer’s input is such that is a vector of size . Note: Some people consider an imaginary input layer of size which connects to first hidden layer. If you haven’t read this anywhere just forget this note. For others I find this way of representing layers easier when will be implementing classes for different types of neural network layers. We can have zero to any number of hidden layers. In case of zero hidden layers our network for binary classification task will be same as logistic regression descrsibed in previous post. Think … 💭 Since we have only single artificial neuron of output layer in the whole neural network. Fig 1 : Feedforward neural network Establish Notations: For notational convenience we have removed superscript (i) for training example . So is single training input, is expected output and is predicted output Input is such that is a vector of size . We have hidden layers. Output layer is denoted by or Each layer has following attributes weight matrix , output vector and bias vector $$b^l$. I am proposing below notations for your easy of understanding the equations in upcoming sections. Also check Fig 1 above let output layer has size i.e artificial neurons. Layer has size and Layer has size We will use to denote individual neurons in layer , for layer and for output layer . You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think. For layer weight matrix has size and for ouput layer has size For layer vectors and has size and for layer vectors and has size and for output layer vectors and has size Artificial neuron in layer has bias (scalar), output (scalar), weight vector , i.e. row of weight matrix for layer l. It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output.","author":null,"@type":"BlogPosting","url":"http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html","image":null,"publisher":null,"headline":"Neural Networks Part 3: Feedforward neural network","dateModified":"2017-09-17T00:00:00+05:30","datePublished":"2017-09-17T00:00:00+05:30","sameAs":null,"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html"},"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+<body>
+  <div class="container_post">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+<header class="masthead">
+  <h1 class="masthead-title--small">
+    <a href="/">Rakesh Malviya</a>
+  </h1>
+</header>      
+<div class="content post">
+  <h1 class="post-title">4. Neural Networks Part 3: Feedforward neural network</h1>
+  <div class="meta_wrapper">
+  <span class="post-date">17 Sep 2017</span>
+  
+  
+    <a href="/tags#neural-networks" class="post-tag">Neural Networks</a>
+  
+    <a href="/tags#machine-learning" class="post-tag">Machine Learning</a>
+  
+    <a href="/tags#deep-learning" class="post-tag">Deep Learning</a>
+  
+  
+<div class="meta_wrapper">  
+  <p><strong>Required Learning:</strong> My previous posts on Neural networks</p>
+
+<p><strong>Feedforward neural network</strong> is neural network architecture consisting of layers of artificial neurons such that:</p>
+<ol>
+  <li>Each neuron in a layer is connected to all neurons of previous layer, i.e. its input is output of all neurons of previous layers.</li>
+  <li>Last layer is called output layer and returns <script type="math/tex">y'</script>, predicted y</li>
+  <li>Other layers are called hidden layers</li>
+  <li>first hidden layer’s input is <script type="math/tex">x</script> such that <script type="math/tex">x</script> is a vector <script type="math/tex">(x_1,x_2,x_3,..... x_n)</script> of size <script type="math/tex">n</script>. <strong>Note:</strong> Some people consider an imaginary input layer of size <script type="math/tex">n</script> which connects to first hidden layer. If you haven’t read this anywhere just forget this note. For others I find this way of representing layers easier when will be implementing classes for different types of neural network layers.</li>
+  <li>We can have zero to any number of hidden layers. In case of zero hidden layers our network for binary classification task will be same as logistic regression descrsibed in previous post. Think … 💭 Since we have only single artificial neuron of output layer in the whole neural network.</li>
+</ol>
+
+<p><img src="/assets/img/blog/4/4_1_neuralnetwork.svg" alt="" title="Feedforward neural network" />
+<i><center>Fig 1 : Feedforward neural network</center></i></p>
+
+<h4 id="establish-notations">Establish Notations:</h4>
+<ol>
+  <li>For notational convenience we have removed superscript (i) for <script type="math/tex">i^{th}</script> training example <script type="math/tex">(x,y)</script>. So <script type="math/tex">x</script> is single training input, <script type="math/tex">y</script> is expected output and <script type="math/tex">y'</script> is predicted output</li>
+  <li>Input <script type="math/tex">x</script> is such that <script type="math/tex">x</script> is a vector <script type="math/tex">(x_1,x_2,x_3,..... x_n)</script> of size <script type="math/tex">n</script>.</li>
+  <li>We have <script type="math/tex">l</script> hidden layers. Output layer is denoted by <script type="math/tex">l+1</script> or <script type="math/tex">o</script></li>
+  <li>Each layer <script type="math/tex">l</script> has following attributes weight matrix <script type="math/tex">W^l</script>, output vector <script type="math/tex">h^l</script> and bias vector $$b^l$.</li>
+  <li><strong>I am proposing below notations for your easy of understanding the equations in upcoming sections. Also check Fig 1 above</strong></li>
+  <li>let output layer has size <script type="math/tex">r</script> i.e <script type="math/tex">r</script> artificial neurons. Layer <script type="math/tex">l</script> has size <script type="math/tex">q</script> and Layer <script type="math/tex">l-1</script> has size <script type="math/tex">p</script></li>
+  <li>We will use <script type="math/tex">i</script> to denote individual neurons in layer <script type="math/tex">l-1</script>, <script type="math/tex">j</script> for layer <script type="math/tex">l</script> and <script type="math/tex">k</script> for output layer <script type="math/tex">o</script>.</li>
+  <li><strong>You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think</strong>.</li>
+  <li>For layer  <script type="math/tex">l</script> weight matrix <script type="math/tex">W^l</script> has size <script type="math/tex">[qxp]</script> and for ouput layer <script type="math/tex">W^o</script> has size <script type="math/tex">[rxq]</script></li>
+  <li>For layer  <script type="math/tex">l-1</script> vectors <script type="math/tex">h^{l-1}</script> and <script type="math/tex">b^{l-1}</script> has size <script type="math/tex">p</script> and  for layer  <script type="math/tex">l</script> vectors <script type="math/tex">h^l</script> and <script type="math/tex">b^l</script> has size <script type="math/tex">q</script> and for output layer <script type="math/tex">o</script> vectors <script type="math/tex">h^o</script> and <script type="math/tex">b^o</script> has size <script type="math/tex">r</script></li>
+  <li><script type="math/tex">j^{th}</script> Artificial neuron in layer <script type="math/tex">l</script>  has bias <script type="math/tex">b_j^l</script> (scalar), output <script type="math/tex">h_j^l</script>(scalar),  weight vector <script type="math/tex">W_{j:}^l</script> , i.e. <script type="math/tex">j^{th}</script> row of weight matrix <script type="math/tex">W^l</script> for layer l. <em>It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output</em>.</li>
+</ol>
+
+</div>
+
+  </div>
+  <div class="footer">
+  |<a href="/"> ~ </a>|
+ </div> 
+</body>
+</html>
