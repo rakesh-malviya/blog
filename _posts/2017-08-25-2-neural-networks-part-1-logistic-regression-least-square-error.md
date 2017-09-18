@@ -1,7 +1,7 @@
 ---
 title: '2. Neural Networks Part 1: Logistic Regression (Least Square Error)'
 layout: post
-crosspost_to_medium: true
+comments: true
 tags:
 - Neural Networks
 - Machine Learning
@@ -126,7 +126,31 @@ Training Steps:
 	3. 	For $$ j = 1,2,.....n $$ in $$w$$ : 
 			1. Update, $$w_j = w_j - \eta \cdot  \frac{1}{m}\sum_{i=1}^{m}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)}) \cdot  x_j^{(i)} $$
 
-[here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of the above article.
+Code snippet of above steps:
+
+```
+    
+    #Accumulate gradient with respect to bias and weights
+    grad_bias = 0
+    grad_w = np.zeros(len(W))
+    for i in range(X_train.shape[0]):        
+        grad_bias += (YP[i] - y_train[i])*(YP[i])*(1-YP[i]) #dJ/db
+        for j in range(len(W)):
+            #dJ/dW_j
+            grad_w[j] += (YP[i] - y_train[i])*(YP[i])*(1-YP[i])*(X_train[i][j])
+        
+    #Update bias
+    bias = bias - grad_bias*lr/X_train.shape[0]    
+    
+    #Update weights    
+    for j in range(len(W)):
+        W[j] = W[j] - grad_w[j]*lr/X_train.shape[0]
+
+```
+
+#### [Code](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb)
+
+[Here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of the above article.
 
 #### Stochastic gradient descent, SGD
 When training data size $$m$$ is large we choose $$m' < m$$  of batch size. We divide our training data into batches of size $$m'$$. We update weights and bias for each batch as follows:

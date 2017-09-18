@@ -1,7 +1,7 @@
 ---
 title: '3. Neural Networks Part 2: Activation functions and differentiation'
 layout: post
-crosspost_to_medium: true
+comments: true
 tags:
 - Neural Networks
 - Machine Learning

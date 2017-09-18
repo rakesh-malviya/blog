@@ -1,6 +1,7 @@
 ---
 title: '4. Neural Networks Part 3: Feedforward neural network'
 layout: post
+comments: true
 tags:
 - Neural Networks
 - Machine Learning
@@ -30,4 +31,201 @@ tags:
 8. **You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think**.
 9. For layer  $$l$$ weight matrix $$W^l$$ has size $$[qxp]$$ and for ouput layer $$W^o$$ has size $$[rxq]$$
 10.  For layer  $$l-1$$ vectors $$h^{l-1}$$ and $$b^{l-1}$$ has size $$p$$ and  for layer  $$l$$ vectors $$h^l$$ and $$b^l$$ has size $$q$$ and for output layer $$o$$ vectors $$h^o$$ and $$b^o$$ has size $$r$$
-11.  $$j^{th}$$ Artificial neuron in layer $$l$$  has bias $$b_j^l$$ (scalar), output $$h_j^l$$(scalar),  weight vector $$W_{j:}^l$$ , i.e. $$j^{th}$$ row of weight matrix $$W^l$$ for layer l. *It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output*.
+11.  $$j^{th}$$ Artificial neuron in layer $$l$$  has bias $$b_j^l$$ (scalar), output $$h_j^l$$(scalar),  weight vector $$W_{j:}^l$$ , i.e. $$j^{th}$$ row of weight matrix $$W^l$$ for layer l. Also weight vector $$W_{j:}^l = (w_{j1},w_{j2},....w_{ji}...,w_{jp},)$$. *It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output*.
+12.  **Below notations are neccessary to easy of understand and implementing mathematical equations in upcoming sections**
+13.  We will use $$\odot$$ for elementwise multiplication of two vectors, for example $$\left[\begin{array}{c} 1 \\ 2 \end{array}\right]   \odot \left[\begin{array}{c} 1 \\ 2\end{array} \right]= \left[ \begin{array}{c} {1 \cdot 1} \\ {2 \cdot 2} \end{array} \right]= \left[ \begin{array}{c} 1 \\ 4 \end{array} \right]$$
+14.  We will use $$\otimes$$ for matrix multiplication
+
+#### Training
+Let us use our Neural network (in Fig 1) for classification. Note, for binary classification our last layer will have only one neuron hence $$r==1$$, but we will keep our approach general. Also for simplicity we will assume that activation function of all the neurons is sigmoid function $$\sigma()$$.
+
+Let our loss function, $$J = \frac{1}{2}\sum_{k=1}^{r}(y_k - y'_k)^2$$.
+
+So our goal is to minimize loss, $$J$$. We can do this only by learning correct weights and bias for each neuron in our network. It looks complex if we look at each neuron individualy. We can simplify this task by breaking our training steps into three steps of **Backpropagation**:
+1. **Forward pass:** calculate output of each neuron.
+2. **Backward pass:** calculate $$\frac{\partial{J}}{\partial{b_j^l}}$$ and $$\frac{\partial{J}}{\partial{w_{ji}^l}}$$ for each neuron.
+3. **Update weights and biases**
+
+#### Foward pass:
+Output of $$j^{th}$$ neuron in $$l^{th}$$ layer is defined as, 
+$$
+\begin{align} 
+h_j^l = \sigma(\sum_{i=1}^{p} w_{ji}^l  h_i^{l-1} + b_j^l) \tag{1} \label{eq1}
+\end{align}
+$$
+
+**We can use equation $$\eqref{eq1}$$ to get output of each neuron in forward pass**
+
+Let total input to above neuron defined as, 
+$$
+\begin{align} 
+z_j^l = \sum_{i=1}^{p} w_{ji}^l  h_i^{l-1} + b_j^l \tag{2} \label{eq2}
+\end{align}
+$$
+
+hence, 
+$$
+\begin{align} 
+h_j^l &= \sigma(z_j^l) && \text{by \eqref{eq1} and \eqref{eq2}} \tag{3} \label{eq3}
+\end{align}
+$$
+
+similarly for output layer, 
+$$
+\begin{align} 
+h_k^o &= \sigma(z_k^o) && \text{by \eqref{eq3}} \tag{4} \label{eq4}\\
+z_k^o &= \sum_{j=1}^{q} w_{kj}^o  h_j^{l} + b_k^o && \text{by \eqref{eq2}} \tag{5} \label{eq5}
+\end{align}
+$$
+
+Also, output of output layer is predicted $$y$$ hence,
+
+$$
+\begin{align} 
+h_k^o = y'_k \tag{6} \label{eq6}
+\end{align}
+$$
+
+###### Forward pass (vectorized)
+It is important that we implement code in the vectors and matrix operations to improve preformance.
+
+$$
+\begin{align} 
+h^l &= \sigma(z^l) && \text{by \eqref{eq3}} \tag{7} \label{eq7}\\
+z^l &= W^l \otimes h^{l-1} + b^l && \text{by \eqref{eq2}}  \tag{8} \label{eq8}\\
+h^o &= \sigma(z^o) && \text{by \eqref{eq4}} \tag{9} \label{eq9}\\
+z^o &= W^o \otimes h^{l} + b^o && \text{by \eqref{eq5}}  \tag{10} \label{eq10}\\
+\end{align}
+$$
+
+**Note: for vectors $$\sigma()$$ is called elementwise**
+
+###### Useful derivatives:
+$$
+\begin{align} 
+\frac{\partial{h_j^l}}{\partial z_j^l} &= \frac{\partial}{\partial z_j^l}{\sigma({z_j^l}}) && \text{by \eqref{eq3}} \\
+\frac{\partial{h_j^l}}{\partial z_j^l} &= \sigma'({z_j^l}) && \tag{11} \label{eq11} \\
+\frac{\partial{z_j^l}}{\partial w_{ji}^l} &= h_i^{l-1} && \tag{12} \label{eq12}
+\end{align}
+$$
+
+where, $$\sigma'(z)$$ is derivative of $$\sigma(z)$$ with repect $$z$$
+
+Similarly for loss $$J$$,
+$$
+\begin{align} 
+\frac{\partial{J}}{\partial y'_k} &= (y'_k - y_k) && \text{how ? check prev post} \tag{13} \label{eq13}
+\end{align}
+$$
+
+
+
+
+#### Backward pass
+
+ Gradient of loss with respect to weights for output layer is,  
+$$
+\begin{align} 
+\frac{\partial{J}}{\partial{w_{kj}^o}} &= \frac{\partial{J}}{\partial{y'_k}} \cdot \frac{\partial{y'_k}}{\partial{z_k^o}} \cdot \frac{\partial{z_k^o}}{\partial{w_{kj}^o}}  &&\text{by chain rule} \tag{14} \label{eq14} \\
+\frac{\partial{J}}{\partial{w_{kj}^o}} &=(y'_k - y_k)  \cdot  \sigma'({z_k^o}) \cdot h_j^l  &&\text{by \eqref{eq11},\eqref{eq12},\eqref{eq13}}  \tag{15} \label{eq15}\\
+\end{align} 
+$$
+
+Let us define gradient of loss with respect to total input for output layer as,
+
+$$
+\begin{align} 
+\delta_k^o &= \frac{\partial{J}}{\partial{z_k^o}} \tag{16} \label{eq16}\\
+&= \frac{\partial{J}}{\partial{y'_k}} \cdot \frac{\partial{y'_k}}{\partial{z_k^o}} \\
+\delta_k^o &= \frac{\partial{J}}{\partial{y'_k}} \cdot \sigma'({z_k^o}) \tag{17} \label{eq17}\\
+\frac{\partial{J}}{\partial{w_{kj}^o}} &=\delta_k^o \cdot h_j^l  &&\text{by \eqref{eq15},\eqref{eq17}} \tag{18} \label{eq18}\\
+\end{align} 
+$$
+
+Similarly for layer $$l$$,
+
+$$
+\begin{align} 
+\frac{\partial{J}}{\partial{w_{ji}^l}} &=\delta_j^l \cdot h_i^{l-1} \tag{19} \label{eq19} \\
+\delta_j^l &= \frac{\partial{J}}{\partial{z_j^l}} \\
+&= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot  \frac{\partial{z_k^o}}{\partial{z_j^l}}\\
+&= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot  \frac{\partial}{\partial{z_j^l}} \big( \sum_{j=1}^{q} w_{kj}^o  h_j^{l} + b_k^o \big) && \text{by \eqref{eq5}}\\
+&= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot w_{kj}^o \cdot  \frac{\partial{h_j^l}}{\partial{z_j^l}} \\
+\delta_j^l &= \sum_{k=1}^{r} \delta_k^o \cdot w_{kj}^o \cdot \sigma'({z_j^l}) && \text{by \eqref{eq11},\eqref{eq16}}\\
+\delta_j^l &= \sum_{k=1}^{r} \delta_k^{l+1} \cdot w_{kj}^{l+1} \cdot \sigma'({z_j^l}) && \text{by,  } {o=l+1} \tag{20} \label{eq20}\\
+\end{align} 
+$$
+	
+Similarly you can easily prove for bias,
+$$
+\begin{align} 
+\frac{\partial{J}}{\partial{b_j^l}} &=\delta_j^l \tag{21} \label{eq21}\\
+\frac{\partial{J}}{\partial{b_k^o}} &=\delta_k^o \tag{22} \label{eq22}\\
+\end{align} 
+$$
+
+
+###### Backword pass (Vectorized)
+
+$$
+\begin{align} 
+\delta^o &= \nabla_{y'}J \odot \sigma'(z^o) && \text{by \eqref{eq17}} \tag{23} \label{eq23}\\
+\delta^l &= ((W^{l+1})^T \otimes \delta^{l+1} )\odot  \sigma'({z^l}) && \text{by \eqref{eq20}} \tag{24} \label{eq24}\\
+\end{align} 
+$$
+
+where $$(W^l)^T$$ is transpose of matrix $$W^l$$  and $$\nabla_{y'}J$$, Derivative of J with respect recpect to vector $$y'$$, i.e.
+
+$$
+\begin{align} 
+\nabla_{y'}J =  \frac{\partial{J}}{\partial{y'}}= \left[\begin{array}{c} \frac{\partial{J}}{y'_1} \\  \frac{\partial{J}}{y'_2} \\ \vdots \\ \frac{\partial{J}}{y'_k} \\ \vdots \end{array}\right]
+\end{align} 
+$$
+
+Also,
+
+$$
+\begin{align}
+\nabla_{b^l}J &=  \delta^l   && \text{by \eqref{eq21}} \tag{25} \label{eq25}\\
+\nabla_{W^l}J &=  \delta^l  \otimes (h^{l-1})^T && \text{by \eqref{eq19}} \tag{26} \label{eq26}\\
+\end{align} 
+$$
+
+Where, $$\nabla_{W^l}J$$, Derivative of J with respect recpect to matrix $$W^l$$, i.e.
+
+$$
+\begin{align}
+\nabla_{W^l}J =  \frac{\partial{J}}{\partial{W^l}}  = \begin{bmatrix} \frac{\partial{J}}{\partial{w_{11}}} & \frac{\partial{J}}{\partial{w_{12}}} & \cdots & \frac{\partial{J}}{\partial{w_{1i}}} & \cdots \\ \frac{\partial{J}}{\partial{w_{21}}} & \frac{\partial{J}}{\partial{w_{22}}} & \cdots & \frac{\partial{J}}{\partial{w_{2i}}} & \cdots \\ \vdots & \vdots & \vdots & \vdots \\ \frac{\partial{J}}{\partial{w_{j1}}} & \frac{\partial{J}}{\partial{w_{j2}}} & \cdots & \frac{\partial{J}}{\partial{w_{ji}}} & \cdots \\ \vdots & \vdots & \vdots & \vdots \end{bmatrix}
+\end{align} 
+$$
+
+#### Update step:
+1. Given a training batch of size $$m$$ and learning rate $$\eta$$
+2. For each training example in $$i$$ in batch do **Forward pass** and Backward pass, accumulate $$\nabla_{b^l}J^{(i)}$$ and $$\nabla_{W^l}J^{(i)}$$
+3. Update weights and bias for each layer $$l$$ as follows, 
+
+$$
+\begin{align}
+b_l &= b_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{b^l}J^{(i)} \tag{27} \label{eq27}\\
+W_l &= W_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{W^l}J^{(i)} \tag{28} \label{eq28}\\
+\end{align} 
+$$
+
+#### td;dr.
+
+$$
+\begin{align}
+h^l &= \sigma(z^l) && \text{by \eqref{eq7}} \\
+z^l &= W^l \otimes h^{l-1} + b^l && \text{by \eqref{eq8}}  \\
+\delta^o &= \nabla_{y'}J \odot \sigma'(z^o) && \text{by \eqref{eq23}} \\
+\delta^l &= ((W^{l+1})^T \otimes \delta^{l+1} )\odot  \sigma'({z^l}) && \text{by \eqref{eq24}} \\
+\nabla_{b^l}J &=  \delta^l   && \text{by \eqref{eq26}} \\
+\nabla_{W^l}J &=  \delta^l  \otimes (h^{l-1})^T && \text{by \eqref{eq26}} \\
+b_l &= b_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{b^l}J^{(i)} && \text{by \eqref{eq27}}  \\
+W_l &= W_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{W^l}J^{(i)} && \text{by \eqref{eq28}} \\
+\end{align} 
+$$
+
+#### [Code](https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src)
+
+[Here](https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src) is the python implementation of the above article.

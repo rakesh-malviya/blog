@@ -29,3 +29,4 @@ title: Tags
     {% endfor %}
   </div>
 </div>
+{% include analytics.md %}
