@@ -229,3 +229,6 @@ $$
 #### [Code](https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src)
 
 [Here](https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src) is the python implementation of the above article.
+
+#### References:
+1. Neural Networks and Deep Learning Chapter 2 [link](http://neuralnetworksanddeeplearning.com/chap2.html)
