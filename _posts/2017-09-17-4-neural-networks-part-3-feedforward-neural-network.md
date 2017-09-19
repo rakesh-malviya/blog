@@ -14,7 +14,7 @@ tags:
 1. Each neuron in a layer is connected to all neurons of previous layer, i.e. its input is output of all neurons of previous layers.
 2. Last layer is called output layer and returns $$y'$$, predicted y
 3. Other layers are called hidden layers
-4. first hidden layer's input is $$x$$ such that $$x$$ is a vector $$(x_1,x_2,x_3,..... x_n)$$ of size $$n$$. **Note:** Some people consider an imaginary input layer of size $$n$$ which connects to first hidden layer. If you haven't read this anywhere just forget this note. For others I find this way of representing layers easier when will be implementing classes for different types of neural network layers.
+4. first hidden layer's input is $$\mathbf{x}$$ such that $$\mathbf{x}$$ is a vector $$(x_1,x_2,x_3,..... x_n)$$ of size $$n$$. **Note:** Some people consider an imaginary input layer of size $$n$$ which connects to first hidden layer. If you haven't read this anywhere just forget this note. For others I find this way of representing layers easier when we will be implementing classes for different types of neural network layers.
 5. We can have zero to any number of hidden layers. In case of zero hidden layers our network for binary classification task will be same as logistic regression descrsibed in previous post. Think ... &#x1f4ad; Since we have only single artificial neuron of output layer in the whole neural network.
 
 ![]({{ site.baseurl }}/assets/img/blog/4/4_1_neuralnetwork.svg "Feedforward neural network")
@@ -22,19 +22,20 @@ tags:
 
 #### Establish Notations:
 1. For notational convenience we have removed superscript (i) for $$i^{th}$$ training example $$(x,y)$$. So $$x$$ is single training input, $$y$$ is expected output and $$y'$$ is predicted output
-2. Input $$x$$ is such that $$x$$ is a vector $$(x_1,x_2,x_3,..... x_n)$$ of size $$n$$.
+2. Input $$\mathbf{x}$$ is such that $$\mathbf{}x$$ is a vector $$(x_1,x_2,x_3,..... x_n)$$ of size $$n$$.
 3. We have $$l$$ hidden layers. Output layer is denoted by $$l+1$$ or $$o$$
-4. Each layer $$l$$ has following attributes weight matrix $$W^l$$, output vector $$h^l$$ and bias vector $$b^l$.
+4. Each layer $$l$$ has following attributes weight matrix $$\mathbf{W}^l$$, output vector $$\mathbf{h}^l$$ and bias vector $$\mathbf{b}^l$.
 5. **I am proposing below notations for your easy of understanding the equations in upcoming sections. Also check Fig 1 above**
 6. let output layer has size $$r$$ i.e $$r$$ artificial neurons. Layer $$l$$ has size $$q$$ and Layer $$l-1$$ has size $$p$$
 7. We will use $$i$$ to denote individual neurons in layer $$l-1$$, $$j$$ for layer $$l$$ and $$k$$ for output layer $$o$$.
 8. **You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think**.
-9. For layer  $$l$$ weight matrix $$W^l$$ has size $$[qxp]$$ and for ouput layer $$W^o$$ has size $$[rxq]$$
-10.  For layer  $$l-1$$ vectors $$h^{l-1}$$ and $$b^{l-1}$$ has size $$p$$ and  for layer  $$l$$ vectors $$h^l$$ and $$b^l$$ has size $$q$$ and for output layer $$o$$ vectors $$h^o$$ and $$b^o$$ has size $$r$$
-11.  $$j^{th}$$ Artificial neuron in layer $$l$$  has bias $$b_j^l$$ (scalar), output $$h_j^l$$(scalar),  weight vector $$W_{j:}^l$$ , i.e. $$j^{th}$$ row of weight matrix $$W^l$$ for layer l. Also weight vector $$W_{j:}^l = (w_{j1},w_{j2},....w_{ji}...,w_{jp},)$$. *It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output*.
+9. For layer  $$l$$ weight matrix $$\mathbf{W}^l$$ has size $$[qxp]$$ and for ouput layer $$\mathbf{W}^o$$ has size $$[rxq]$$
+10.  For layer  $$l-1$$ vectors $$\mathbf{h}^{l-1}$$ and $$\mathbf{b}^{l-1}$$ has size $$p$$ and  for layer  $$l$$ vectors $$\mathbf{h}^l$$ and $$\mathbf{b}^l$$ has size $$q$$ and for output layer $$o$$ vectors $$\mathbf{h}^o$$ and $$\mathbf{b}^o$$ has size $$r$$
+11.  $$j^{th}$$ Artificial neuron in layer $$l$$  has bias $$b_j^l$$ (scalar), output $$h_j^l$$(scalar),  weight vector $$\mathbf{W}_{j:}^l$$ , i.e. $$j^{th}$$ row of weight matrix $$\mathbf{W}^l$$ for layer l. Also weight vector $$\mathbf{W}_{j:}^l = (w_{j1},w_{j2},....w_{ji}...,w_{jp},)$$. *It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output*.
 12.  **Below notations are neccessary to easy of understand and implementing mathematical equations in upcoming sections**
 13.  We will use $$\odot$$ for elementwise multiplication of two vectors, for example $$\left[\begin{array}{c} 1 \\ 2 \end{array}\right]   \odot \left[\begin{array}{c} 1 \\ 2\end{array} \right]= \left[ \begin{array}{c} {1 \cdot 1} \\ {2 \cdot 2} \end{array} \right]= \left[ \begin{array}{c} 1 \\ 4 \end{array} \right]$$
 14.  We will use $$\otimes$$ for matrix multiplication
+15.  We will use bold capital letters for matrix e.g. $$\mathbf{W}^l$$, bold small letter for vectors $$\mathbf{h}^l$$ and normal small latters for scalars.
 
 #### Training
 Let us use our Neural network (in Fig 1) for classification. Note, for binary classification our last layer will have only one neuron hence $$r==1$$, but we will keep our approach general. Also for simplicity we will assume that activation function of all the neurons is sigmoid function $$\sigma()$$.
@@ -55,6 +56,9 @@ h_j^l = \sigma(\sum_{i=1}^{p} w_{ji}^l  h_i^{l-1} + b_j^l) \tag{1} \label{eq1}
 $$
 
 **We can use equation $$\eqref{eq1}$$ to get output of each neuron in forward pass**
+
+![]({{ site.baseurl }}/assets/img/blog/4/4_2_forward_pass.svg "Forward pass")
+<i><center>Fig 2 : Forward pass </center></i>
 
 Let total input to above neuron defined as, 
 $$
@@ -91,10 +95,10 @@ It is important that we implement code in the vectors and matrix operations to i
 
 $$
 \begin{align} 
-h^l &= \sigma(z^l) && \text{by \eqref{eq3}} \tag{7} \label{eq7}\\
-z^l &= W^l \otimes h^{l-1} + b^l && \text{by \eqref{eq2}}  \tag{8} \label{eq8}\\
-h^o &= \sigma(z^o) && \text{by \eqref{eq4}} \tag{9} \label{eq9}\\
-z^o &= W^o \otimes h^{l} + b^o && \text{by \eqref{eq5}}  \tag{10} \label{eq10}\\
+\mathbf{h}^l &= \sigma(\mathbf{z}^l) && \text{by \eqref{eq3}} \tag{7} \label{eq7}\\
+\mathbf{z}^l &= \mathbf{W}^l \otimes \mathbf{h}^{l-1} + \mathbf{b}^l && \text{by \eqref{eq2}}  \tag{8} \label{eq8}\\
+\mathbf{h}^o &= \sigma(\mathbf{z}^o) && \text{by \eqref{eq4}} \tag{9} \label{eq9}\\
+\mathbf{z}^o &= \mathbf{W}^o \otimes \mathbf{h}^{l} + \mathbf{b}^o && \text{by \eqref{eq5}}  \tag{10} \label{eq10}\\
 \end{align}
 $$
 
@@ -169,16 +173,16 @@ $$
 
 $$
 \begin{align} 
-\delta^o &= \nabla_{y'}J \odot \sigma'(z^o) && \text{by \eqref{eq17}} \tag{23} \label{eq23}\\
-\delta^l &= ((W^{l+1})^T \otimes \delta^{l+1} )\odot  \sigma'({z^l}) && \text{by \eqref{eq20}} \tag{24} \label{eq24}\\
+\pmb{\delta}^o &= \nabla_{\mathbf{y'}}J \odot \sigma'(\mathbf{z}^o) && \text{by \eqref{eq17}} \tag{23} \label{eq23}\\
+\pmb{\delta}^l &= ((\mathbf{W}^{l+1})^T \otimes \pmb{\delta}^{l+1} )\odot  \sigma'({\mathbf{z}^l}) && \text{by \eqref{eq20}} \tag{24} \label{eq24}\\
 \end{align} 
 $$
 
-where $$(W^l)^T$$ is transpose of matrix $$W^l$$  and $$\nabla_{y'}J$$, Derivative of J with respect recpect to vector $$y'$$, i.e.
+where $$(\mathbf{W}^l)^T$$ is transpose of matrix $$\mathbf{W}^l$$  and $$\nabla_{\mathbf{y'}}J$$, Derivative of J with respect recpect to vector $$\mathbf{y'}$$, i.e.
 
 $$
 \begin{align} 
-\nabla_{y'}J =  \frac{\partial{J}}{\partial{y'}}= \left[\begin{array}{c} \frac{\partial{J}}{y'_1} \\  \frac{\partial{J}}{y'_2} \\ \vdots \\ \frac{\partial{J}}{y'_k} \\ \vdots \end{array}\right]
+\nabla_{\mathbf{y'}}J =  \frac{\partial{J}}{\partial{\mathbf{y'}}}= \left[\begin{array}{c} \frac{\partial{J}}{y'_1} \\  \frac{\partial{J}}{y'_2} \\ \vdots \\ \frac{\partial{J}}{y'_k} \\ \vdots \end{array}\right]
 \end{align} 
 $$
 
@@ -186,28 +190,28 @@ Also,
 
 $$
 \begin{align}
-\nabla_{b^l}J &=  \delta^l   && \text{by \eqref{eq21}} \tag{25} \label{eq25}\\
-\nabla_{W^l}J &=  \delta^l  \otimes (h^{l-1})^T && \text{by \eqref{eq19}} \tag{26} \label{eq26}\\
+\nabla_{\mathbf{b}^l}J &=  \pmb{\delta}^l   && \text{by \eqref{eq21}} \tag{25} \label{eq25}\\
+\nabla_{\mathbf{W}^l}J &=  \pmb{\delta}^l  \otimes (\mathbf{h}^{l-1})^T && \text{by \eqref{eq19}} \tag{26} \label{eq26}\\
 \end{align} 
 $$
 
-Where, $$\nabla_{W^l}J$$, Derivative of J with respect recpect to matrix $$W^l$$, i.e.
+Where, $$\nabla_{\mathbf{W}^l}J$$, Derivative of J with respect recpect to matrix $$\mathbf{W}^l$$, i.e.
 
 $$
 \begin{align}
-\nabla_{W^l}J =  \frac{\partial{J}}{\partial{W^l}}  = \begin{bmatrix} \frac{\partial{J}}{\partial{w_{11}}} & \frac{\partial{J}}{\partial{w_{12}}} & \cdots & \frac{\partial{J}}{\partial{w_{1i}}} & \cdots \\ \frac{\partial{J}}{\partial{w_{21}}} & \frac{\partial{J}}{\partial{w_{22}}} & \cdots & \frac{\partial{J}}{\partial{w_{2i}}} & \cdots \\ \vdots & \vdots & \vdots & \vdots \\ \frac{\partial{J}}{\partial{w_{j1}}} & \frac{\partial{J}}{\partial{w_{j2}}} & \cdots & \frac{\partial{J}}{\partial{w_{ji}}} & \cdots \\ \vdots & \vdots & \vdots & \vdots \end{bmatrix}
+\nabla_{\mathbf{W}^l}J =  \frac{\partial{J}}{\partial{\mathbf{W}^l}}  = \begin{bmatrix} \frac{\partial{J}}{\partial{w_{11}}} & \frac{\partial{J}}{\partial{w_{12}}} & \cdots & \frac{\partial{J}}{\partial{w_{1i}}} & \cdots \\ \frac{\partial{J}}{\partial{w_{21}}} & \frac{\partial{J}}{\partial{w_{22}}} & \cdots & \frac{\partial{J}}{\partial{w_{2i}}} & \cdots \\ \vdots & \vdots & \vdots & \vdots \\ \frac{\partial{J}}{\partial{w_{j1}}} & \frac{\partial{J}}{\partial{w_{j2}}} & \cdots & \frac{\partial{J}}{\partial{w_{ji}}} & \cdots \\ \vdots & \vdots & \vdots & \vdots \end{bmatrix}
 \end{align} 
 $$
 
 #### Update step:
 1. Given a training batch of size $$m$$ and learning rate $$\eta$$
-2. For each training example in $$i$$ in batch do **Forward pass** and Backward pass, accumulate $$\nabla_{b^l}J^{(i)}$$ and $$\nabla_{W^l}J^{(i)}$$
+2. For each training example in $$i$$ in batch do **Forward pass** and Backward pass, accumulate $$\nabla_{\mathbf{b}^l}J^{(i)}$$ and $$\nabla_{\mathbf{W}^l}J^{(i)}$$
 3. Update weights and bias for each layer $$l$$ as follows, 
 
 $$
 \begin{align}
-b_l &= b_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{b^l}J^{(i)} \tag{27} \label{eq27}\\
-W_l &= W_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{W^l}J^{(i)} \tag{28} \label{eq28}\\
+\mathbf{b}_l &= \mathbf{b}_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{b}^l}J^{(i)} \tag{27} \label{eq27}\\
+\mathbf{W}_l &= \mathbf{W}_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} \tag{28} \label{eq28}\\
 \end{align} 
 $$
 
@@ -215,14 +219,14 @@ $$
 
 $$
 \begin{align}
-h^l &= \sigma(z^l) && \text{by \eqref{eq7}} \\
-z^l &= W^l \otimes h^{l-1} + b^l && \text{by \eqref{eq8}}  \\
-\delta^o &= \nabla_{y'}J \odot \sigma'(z^o) && \text{by \eqref{eq23}} \\
-\delta^l &= ((W^{l+1})^T \otimes \delta^{l+1} )\odot  \sigma'({z^l}) && \text{by \eqref{eq24}} \\
-\nabla_{b^l}J &=  \delta^l   && \text{by \eqref{eq26}} \\
-\nabla_{W^l}J &=  \delta^l  \otimes (h^{l-1})^T && \text{by \eqref{eq26}} \\
-b_l &= b_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{b^l}J^{(i)} && \text{by \eqref{eq27}}  \\
-W_l &= W_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{W^l}J^{(i)} && \text{by \eqref{eq28}} \\
+\mathbf{h}^l &= \sigma(\mathbf{z}^l) && \text{by \eqref{eq7}} \\
+\mathbf{z}^l &= \mathbf{W}^l \otimes \mathbf{h}^{l-1} + \mathbf{b}^l && \text{by \eqref{eq8}}  \\
+\pmb{\delta}^o &= \nabla_{\mathbf{y'}}J \odot \sigma'(\mathbf{z}^o) && \text{by \eqref{eq23}} \\
+\pmb{\delta}^l &= ((\mathbf{W}^{l+1})^T \otimes \pmb{\delta}^{l+1} )\odot  \sigma'({\mathbf{z}^l}) && \text{by \eqref{eq24}} \\
+\nabla_{\mathbf{b}^l}J &=  \pmb{\delta}^l   && \text{by \eqref{eq26}} \\
+\nabla_{\mathbf{W}^l}J &=  \pmb{\delta}^l  \otimes (\mathbf{h}^{l-1})^T && \text{by \eqref{eq26}} \\
+\mathbf{b}_l &= \mathbf{b}_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{b}^l}J^{(i)} && \text{by \eqref{eq27}}  \\
+\mathbf{W}_l &= \mathbf{W}_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} && \text{by \eqref{eq28}} \\
 \end{align} 
 $$
 
