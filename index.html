@@ -11,6 +11,7 @@ layout: default
     {% endfor %}
   </nav>
 </header>
+{% include share.md %}
 <div class="content list">
 {% if site.posts.size == 0 %}
   <h2>No post found</h2>
@@ -24,6 +25,7 @@ layout: default
   {% if post.date %}{% include meta_index.md %}{% endif %}
   </div>
 {% endfor %}
+{% include share.md %}
 <div class="pagination">
   {% if paginator.previous_page %}
     <a href="{{ paginator.previous_page_path }}" class="previous">..</a>
