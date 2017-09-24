@@ -148,9 +148,9 @@ Code snippet of above steps:
 
 ```
 
-#### [Code](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb)
+#### [Code](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/2-neural-networks-part-1-logistic-regression-least-square-error.ipynb)
 
-[Here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of the above article.
+[Here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/2-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of the above article.
 
 #### Stochastic gradient descent, SGD
 When training data size $$m$$ is large we choose $$m' < m$$  of batch size. We divide our training data into batches of size $$m'$$. We update weights and bias for each batch as follows:

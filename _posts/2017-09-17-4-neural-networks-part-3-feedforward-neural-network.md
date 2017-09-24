@@ -230,6 +230,8 @@ $$
 \end{align} 
 $$
 
+#### [Python Notebook](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/4-neural-networks-part-3-feedforward-neural-network.ipynb)
+
 #### [Code](https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src)
 
 [Here](https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src) is the python implementation of the above article.

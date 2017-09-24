@@ -211,6 +211,8 @@ h_k^o = y'_k \tag{6} \label{eq6}
 \mathbf{W}_l &amp;= \mathbf{W}_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} &amp;&amp; \text{by \eqref{eq28}} \\
 \end{align} %]]&gt;&lt;/script&gt;
 
+&lt;h4 id=&quot;python-notebook&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/4-neural-networks-part-3-feedforward-neural-network.ipynb&quot;&gt;Python Notebook&lt;/a&gt;&lt;/h4&gt;
+
 &lt;h4 id=&quot;code&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src&quot;&gt;Code&lt;/a&gt;&lt;/h4&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src&quot;&gt;Here&lt;/a&gt; is the python implementation of the above article.&lt;/p&gt;
@@ -533,9 +535,9 @@ b &amp;= b - \eta \cdot \frac{\partial{J}}{\partial{b}} \\
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;code&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Code&lt;/a&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;code&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/2-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Code&lt;/a&gt;&lt;/h4&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Here&lt;/a&gt; is the python implementation of the above article.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/2-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Here&lt;/a&gt; is the python implementation of the above article.&lt;/p&gt;
 
 &lt;h4 id=&quot;stochastic-gradient-descent-sgd&quot;&gt;Stochastic gradient descent, SGD&lt;/h4&gt;
 &lt;p&gt;When training data size &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is large we choose &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
