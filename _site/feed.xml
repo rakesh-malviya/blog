@@ -24,18 +24,18 @@
 &lt;h4 id=&quot;establish-notations&quot;&gt;Establish Notations:&lt;/h4&gt;
 &lt;ol&gt;
   &lt;li&gt;For notational convenience we have removed superscript (i) for &lt;script type=&quot;math/tex&quot;&gt;i^{th}&lt;/script&gt; training example &lt;script type=&quot;math/tex&quot;&gt;(x,y)&lt;/script&gt;. So &lt;script type=&quot;math/tex&quot;&gt;x&lt;/script&gt; is single training input, &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; is expected output and &lt;script type=&quot;math/tex&quot;&gt;y'&lt;/script&gt; is predicted output&lt;/li&gt;
-  &lt;li&gt;Input &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt; is such that &lt;script type=&quot;math/tex&quot;&gt;\mathbf{}x&lt;/script&gt; is a vector &lt;script type=&quot;math/tex&quot;&gt;(x_1,x_2,x_3,..... x_n)&lt;/script&gt; of size &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;Input &lt;script type=&quot;math/tex&quot;&gt;\mathbf{x}&lt;/script&gt; is such that &lt;script type=&quot;math/tex&quot;&gt;\mathbf{}x&lt;/script&gt; is a row vector &lt;script type=&quot;math/tex&quot;&gt;(x_1,x_2,x_3,..... x_n)&lt;/script&gt; of size &lt;script type=&quot;math/tex&quot;&gt;n&lt;/script&gt;.&lt;/li&gt;
   &lt;li&gt;We have &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; hidden layers. Output layer is denoted by &lt;script type=&quot;math/tex&quot;&gt;l+1&lt;/script&gt; or &lt;script type=&quot;math/tex&quot;&gt;o&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;Each layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; has following attributes weight matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt;, output vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^l&lt;/script&gt; and bias vector $$\mathbf{b}^l$.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;I am proposing below notations for your easy of understanding the equations in upcoming sections. Also check Fig 1 above&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Each layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; has following attributes weight matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt;, output vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^l&lt;/script&gt; and bias vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}^l&lt;/script&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;I am proposing below notations for your ease of understanding the equations in upcoming sections. Also check Fig 1 above&lt;/strong&gt;&lt;/li&gt;
   &lt;li&gt;let output layer has size &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; i.e &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt; artificial neurons. Layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; and Layer &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt;&lt;/li&gt;
   &lt;li&gt;We will use &lt;script type=&quot;math/tex&quot;&gt;i&lt;/script&gt; to denote individual neurons in layer &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt;, &lt;script type=&quot;math/tex&quot;&gt;j&lt;/script&gt; for layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;k&lt;/script&gt; for output layer &lt;script type=&quot;math/tex&quot;&gt;o&lt;/script&gt;.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;For layer  &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; weight matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;[qxp]&lt;/script&gt; and for ouput layer &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^o&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;[rxq]&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;For layer  &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt; vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^{l-1}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}^{l-1}&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; and  for layer  &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^l&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}^l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; and for output layer &lt;script type=&quot;math/tex&quot;&gt;o&lt;/script&gt; vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^o&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}^o&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;j^{th}&lt;/script&gt; Artificial neuron in layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;  has bias &lt;script type=&quot;math/tex&quot;&gt;b_j^l&lt;/script&gt; (scalar), output &lt;script type=&quot;math/tex&quot;&gt;h_j^l&lt;/script&gt;(scalar),  weight vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}_{j:}^l&lt;/script&gt; , i.e. &lt;script type=&quot;math/tex&quot;&gt;j^{th}&lt;/script&gt; row of weight matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt; for layer l. Also weight vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}_{j:}^l = (w_{j1},w_{j2},....w_{ji}...,w_{jp},)&lt;/script&gt;. &lt;em&gt;It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;For layer  &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; weight matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;[p \times q]&lt;/script&gt; and for ouput layer &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^o&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;[q \times r]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;For layer  &lt;script type=&quot;math/tex&quot;&gt;l-1&lt;/script&gt; row vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^{l-1}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}^{l-1}&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;p&lt;/script&gt; and  for layer  &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt; row vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^l&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}^l&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;q&lt;/script&gt; and for output layer &lt;script type=&quot;math/tex&quot;&gt;o&lt;/script&gt; row vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^o&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\mathbf{b}^o&lt;/script&gt; has size &lt;script type=&quot;math/tex&quot;&gt;r&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;j^{th}&lt;/script&gt; Artificial neuron in layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;  has bias &lt;script type=&quot;math/tex&quot;&gt;b_j^l&lt;/script&gt; (scalar), output &lt;script type=&quot;math/tex&quot;&gt;h_j^l&lt;/script&gt;(scalar),  weight vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}_{:j}^l&lt;/script&gt; , i.e. &lt;script type=&quot;math/tex&quot;&gt;j^{th}&lt;/script&gt; column of weight matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt; for layer l. Also weight vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}_{:j}^l = (w_{1j},w_{2j},....w_{ij}...,w_{pj},)&lt;/script&gt;. &lt;em&gt;It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output&lt;/em&gt;.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Below notations are neccessary to easy of understand and implementing mathematical equations in upcoming sections&lt;/strong&gt;&lt;/li&gt;
-  &lt;li&gt;We will use &lt;script type=&quot;math/tex&quot;&gt;\odot&lt;/script&gt; for elementwise multiplication of two vectors, for example &lt;script type=&quot;math/tex&quot;&gt;\left[\begin{array}{c} 1 \\ 2 \end{array}\right]   \odot \left[\begin{array}{c} 1 \\ 2\end{array} \right]= \left[ \begin{array}{c} {1 \cdot 1} \\ {2 \cdot 2} \end{array} \right]= \left[ \begin{array}{c} 1 \\ 4 \end{array} \right]&lt;/script&gt;&lt;/li&gt;
+  &lt;li&gt;We will use &lt;script type=&quot;math/tex&quot;&gt;\odot&lt;/script&gt; for elementwise multiplication of two vectors, for example &lt;script type=&quot;math/tex&quot;&gt;\left[\begin{array}{c} 1 , 2 \end{array}\right]   \odot \left[\begin{array}{c} 1 , 2\end{array} \right]= \left[ \begin{array}{c} {1 \cdot 1} , {2 \cdot 2} \end{array} \right]= \left[ \begin{array}{c} 1 , 4 \end{array} \right]&lt;/script&gt;&lt;/li&gt;
   &lt;li&gt;We will use &lt;script type=&quot;math/tex&quot;&gt;\otimes&lt;/script&gt; for matrix multiplication&lt;/li&gt;
   &lt;li&gt;We will use bold capital letters for matrix e.g. &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt;, bold small letter for vectors &lt;script type=&quot;math/tex&quot;&gt;\mathbf{h}^l&lt;/script&gt; and normal small latters for scalars.&lt;/li&gt;
 &lt;/ol&gt;
@@ -48,14 +48,14 @@
 &lt;p&gt;So our goal is to minimize loss, &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;. We can do this only by learning correct weights and bias for each neuron in our network. It looks complex if we look at each neuron individualy. We can simplify this task by breaking our training steps into three steps of &lt;strong&gt;Backpropagation&lt;/strong&gt;:&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;&lt;strong&gt;Forward pass:&lt;/strong&gt; calculate output of each neuron.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Backward pass:&lt;/strong&gt; calculate &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial{J}}{\partial{b_j^l}}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial{J}}{\partial{w_{ji}^l}}&lt;/script&gt; for each neuron.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Backward pass:&lt;/strong&gt; calculate &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial{J}}{\partial{b_j^l}}&lt;/script&gt; and &lt;script type=&quot;math/tex&quot;&gt;\frac{\partial{J}}{\partial{w_{ij}^l}}&lt;/script&gt; for each neuron.&lt;/li&gt;
   &lt;li&gt;&lt;strong&gt;Update weights and biases&lt;/strong&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h4 id=&quot;foward-pass&quot;&gt;Foward pass:&lt;/h4&gt;
 &lt;p&gt;Output of &lt;script type=&quot;math/tex&quot;&gt;j^{th}&lt;/script&gt; neuron in &lt;script type=&quot;math/tex&quot;&gt;l^{th}&lt;/script&gt; layer is defined as, 
 &lt;script type=&quot;math/tex&quot;&gt;\begin{align} 
-h_j^l = \sigma(\sum_{i=1}^{p} w_{ji}^l  h_i^{l-1} + b_j^l) \tag{1} \label{eq1}
+h_j^l = \sigma(\sum_{i=1}^{p} h_i^{l-1} w_{ij}^l + b_j^l) \tag{1} \label{eq1}
 \end{align}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;We can use equation &lt;script type=&quot;math/tex&quot;&gt;\eqref{eq1}&lt;/script&gt; to get output of each neuron in forward pass&lt;/strong&gt;&lt;/p&gt;
@@ -65,7 +65,7 @@ h_j^l = \sigma(\sum_{i=1}^{p} w_{ji}^l  h_i^{l-1} + b_j^l) \tag{1} \label{eq1}
 
 &lt;p&gt;Let total input to above neuron defined as, 
 &lt;script type=&quot;math/tex&quot;&gt;\begin{align} 
-z_j^l = \sum_{i=1}^{p} w_{ji}^l  h_i^{l-1} + b_j^l \tag{2} \label{eq2}
+z_j^l = \sum_{i=1}^{p} h_i^{l-1} w_{ij}^l  + b_j^l \tag{2} \label{eq2}
 \end{align}&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;hence, 
@@ -78,7 +78,7 @@ h_j^l &amp;= \sigma(z_j^l) &amp;&amp; \text{by \eqref{eq1} and \eqref{eq2}} \tag
 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 \begin{align} 
 h_k^o &amp;= \sigma(z_k^o) &amp;&amp; \text{by \eqref{eq3}} \tag{4} \label{eq4}\\
-z_k^o &amp;= \sum_{j=1}^{q} w_{kj}^o  h_j^{l} + b_k^o &amp;&amp; \text{by \eqref{eq2}} \tag{5} \label{eq5}
+z_k^o &amp;= \sum_{j=1}^{q} w_{jk}^o  h_j^{l} + b_k^o &amp;&amp; \text{by \eqref{eq2}} \tag{5} \label{eq5}
 \end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;Also, output of output layer is predicted &lt;script type=&quot;math/tex&quot;&gt;y&lt;/script&gt; hence,&lt;/p&gt;
@@ -93,9 +93,9 @@ h_k^o = y'_k \tag{6} \label{eq6}
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align} 
 \mathbf{h}^l &amp;= \sigma(\mathbf{z}^l) &amp;&amp; \text{by \eqref{eq3}} \tag{7} \label{eq7}\\
-\mathbf{z}^l &amp;= \mathbf{W}^l \otimes \mathbf{h}^{l-1} + \mathbf{b}^l &amp;&amp; \text{by \eqref{eq2}}  \tag{8} \label{eq8}\\
+\mathbf{z}^l &amp;= \mathbf{h}^{l-1} \otimes \mathbf{W}^l + \mathbf{b}^l &amp;&amp; \text{by \eqref{eq2}}  \tag{8} \label{eq8}\\
 \mathbf{h}^o &amp;= \sigma(\mathbf{z}^o) &amp;&amp; \text{by \eqref{eq4}} \tag{9} \label{eq9}\\
-\mathbf{z}^o &amp;= \mathbf{W}^o \otimes \mathbf{h}^{l} + \mathbf{b}^o &amp;&amp; \text{by \eqref{eq5}}  \tag{10} \label{eq10}\\
+\mathbf{z}^o &amp;= \mathbf{h}^{l} \otimes\mathbf{W}^o  + \mathbf{b}^o &amp;&amp; \text{by \eqref{eq5}}  \tag{10} \label{eq10}\\
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;&lt;strong&gt;Note: for vectors &lt;script type=&quot;math/tex&quot;&gt;\sigma()&lt;/script&gt; is called elementwise&lt;/strong&gt;&lt;/p&gt;
@@ -105,7 +105,7 @@ h_k^o = y'_k \tag{6} \label{eq6}
 \begin{align} 
 \frac{\partial{h_j^l}}{\partial z_j^l} &amp;= \frac{\partial}{\partial z_j^l}{\sigma({z_j^l}}) &amp;&amp; \text{by \eqref{eq3}} \\
 \frac{\partial{h_j^l}}{\partial z_j^l} &amp;= \sigma'({z_j^l}) &amp;&amp; \tag{11} \label{eq11} \\
-\frac{\partial{z_j^l}}{\partial w_{ji}^l} &amp;= h_i^{l-1} &amp;&amp; \tag{12} \label{eq12}
+\frac{\partial{z_j^l}}{\partial w_{ij}^l} &amp;= h_i^{l-1} &amp;&amp; \tag{12} \label{eq12}
 \end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;where, &lt;script type=&quot;math/tex&quot;&gt;\sigma'(z)&lt;/script&gt; is derivative of &lt;script type=&quot;math/tex&quot;&gt;\sigma(z)&lt;/script&gt; with repect &lt;script type=&quot;math/tex&quot;&gt;z&lt;/script&gt;&lt;/p&gt;
@@ -113,7 +113,7 @@ h_k^o = y'_k \tag{6} \label{eq6}
 &lt;p&gt;Similarly for loss &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;,
 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 \begin{align} 
-\frac{\partial{J}}{\partial y'_k} &amp;= (y'_k - y_k) &amp;&amp; \text{how ? check prev post} \tag{13} \label{eq13}
+\frac{\partial{J}}{\partial y'_k} &amp;= (y'_k - y_k) &amp;&amp; \text{how ? check prev blogs} \tag{13} \label{eq13}
 \end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;backward-pass&quot;&gt;Backward pass&lt;/h4&gt;
@@ -121,8 +121,8 @@ h_k^o = y'_k \tag{6} \label{eq6}
 &lt;p&gt;Gradient of loss with respect to weights for output layer is,&lt;br /&gt;
 &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
 \begin{align} 
-\frac{\partial{J}}{\partial{w_{kj}^o}} &amp;= \frac{\partial{J}}{\partial{y'_k}} \cdot \frac{\partial{y'_k}}{\partial{z_k^o}} \cdot \frac{\partial{z_k^o}}{\partial{w_{kj}^o}}  &amp;&amp;\text{by chain rule} \tag{14} \label{eq14} \\
-\frac{\partial{J}}{\partial{w_{kj}^o}} &amp;=(y'_k - y_k)  \cdot  \sigma'({z_k^o}) \cdot h_j^l  &amp;&amp;\text{by \eqref{eq11},\eqref{eq12},\eqref{eq13}}  \tag{15} \label{eq15}\\
+\frac{\partial{J}}{\partial{w_{jk}^o}} &amp;= \frac{\partial{J}}{\partial{y'_k}} \cdot \frac{\partial{y'_k}}{\partial{z_k^o}} \cdot \frac{\partial{z_k^o}}{\partial{w_{jk}^o}}  &amp;&amp;\text{by chain rule} \tag{14} \label{eq14} \\
+\frac{\partial{J}}{\partial{w_{jk}^o}} &amp;=(y'_k - y_k)  \cdot  \sigma'({z_k^o}) \cdot h_j^l  &amp;&amp;\text{by \eqref{eq11},\eqref{eq12},\eqref{eq13}}  \tag{15} \label{eq15}\\
 \end{align} %]]&gt;&lt;/script&gt;&lt;/p&gt;
 
 &lt;p&gt;Let us define gradient of loss with respect to total input for output layer as,&lt;/p&gt;
@@ -132,20 +132,20 @@ h_k^o = y'_k \tag{6} \label{eq6}
 \delta_k^o &amp;= \frac{\partial{J}}{\partial{z_k^o}} \tag{16} \label{eq16}\\
 &amp;= \frac{\partial{J}}{\partial{y'_k}} \cdot \frac{\partial{y'_k}}{\partial{z_k^o}} \\
 \delta_k^o &amp;= \frac{\partial{J}}{\partial{y'_k}} \cdot \sigma'({z_k^o}) \tag{17} \label{eq17}\\
-\frac{\partial{J}}{\partial{w_{kj}^o}} &amp;=\delta_k^o \cdot h_j^l  &amp;&amp;\text{by \eqref{eq15},\eqref{eq17}} \tag{18} \label{eq18}\\
+\frac{\partial{J}}{\partial{w_{jk}^o}} &amp;=\delta_k^o \cdot h_j^l  &amp;&amp;\text{by \eqref{eq15},\eqref{eq17}} \tag{18} \label{eq18}\\
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;Similarly for layer &lt;script type=&quot;math/tex&quot;&gt;l&lt;/script&gt;,&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align} 
-\frac{\partial{J}}{\partial{w_{ji}^l}} &amp;=\delta_j^l \cdot h_i^{l-1} \tag{19} \label{eq19} \\
+\frac{\partial{J}}{\partial{w_{ij}^l}} &amp;=\delta_j^l \cdot h_i^{l-1} \tag{19} \label{eq19} \\
 \delta_j^l &amp;= \frac{\partial{J}}{\partial{z_j^l}} \\
 &amp;= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot  \frac{\partial{z_k^o}}{\partial{z_j^l}}\\
-&amp;= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot  \frac{\partial}{\partial{z_j^l}} \big( \sum_{j=1}^{q} w_{kj}^o  h_j^{l} + b_k^o \big) &amp;&amp; \text{by \eqref{eq5}}\\
-&amp;= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot w_{kj}^o \cdot  \frac{\partial{h_j^l}}{\partial{z_j^l}} \\
-\delta_j^l &amp;= \sum_{k=1}^{r} \delta_k^o \cdot w_{kj}^o \cdot \sigma'({z_j^l}) &amp;&amp; \text{by \eqref{eq11},\eqref{eq16}}\\
-\delta_j^l &amp;= \sum_{k=1}^{r} \delta_k^{l+1} \cdot w_{kj}^{l+1} \cdot \sigma'({z_j^l}) &amp;&amp; \text{by,  } {o=l+1} \tag{20} \label{eq20}\\
+&amp;= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot  \frac{\partial}{\partial{z_j^l}} \big( \sum_{j=1}^{q} w_{jk}^o  h_j^{l} + b_k^o \big) &amp;&amp; \text{by \eqref{eq5}}\\
+&amp;= \sum_{k=1}^{r} \frac{\partial{J}}{\partial{z_k^o}} \cdot w_{jk}^o \cdot  \frac{\partial{h_j^l}}{\partial{z_j^l}} \\
+\delta_j^l &amp;= \sum_{k=1}^{r} \delta_k^o \cdot w_{jk}^o \cdot \sigma'({z_j^l}) &amp;&amp; \text{by \eqref{eq11},\eqref{eq16}}\\
+\delta_j^l &amp;= \sum_{k=1}^{r} \delta_k^{l+1} \cdot w_{jk}^{l+1} \cdot \sigma'({z_j^l}) &amp;&amp; \text{by,  } {o=l+1} \tag{20} \label{eq20}\\
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;Similarly you can easily prove for bias,
@@ -160,13 +160,13 @@ h_k^o = y'_k \tag{6} \label{eq6}
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align} 
 \pmb{\delta}^o &amp;= \nabla_{\mathbf{y'}}J \odot \sigma'(\mathbf{z}^o) &amp;&amp; \text{by \eqref{eq17}} \tag{23} \label{eq23}\\
-\pmb{\delta}^l &amp;= ((\mathbf{W}^{l+1})^T \otimes \pmb{\delta}^{l+1} )\odot  \sigma'({\mathbf{z}^l}) &amp;&amp; \text{by \eqref{eq20}} \tag{24} \label{eq24}\\
+\pmb{\delta}^l &amp;= (\pmb{\delta}^{l+1}  \otimes (\mathbf{W}^{l+1})^T)\odot  \sigma'({\mathbf{z}^l}) &amp;&amp; \text{by \eqref{eq20}} \tag{24} \label{eq24}\\
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;where &lt;script type=&quot;math/tex&quot;&gt;(\mathbf{W}^l)^T&lt;/script&gt; is transpose of matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt;  and &lt;script type=&quot;math/tex&quot;&gt;\nabla_{\mathbf{y'}}J&lt;/script&gt;, Derivative of J with respect recpect to vector &lt;script type=&quot;math/tex&quot;&gt;\mathbf{y'}&lt;/script&gt;, i.e.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;\begin{align} 
-\nabla_{\mathbf{y'}}J =  \frac{\partial{J}}{\partial{\mathbf{y'}}}= \left[\begin{array}{c} \frac{\partial{J}}{y'_1} \\  \frac{\partial{J}}{y'_2} \\ \vdots \\ \frac{\partial{J}}{y'_k} \\ \vdots \end{array}\right]
+\nabla_{\mathbf{y'}}J =  \frac{\partial{J}}{\partial{\mathbf{y'}}}= \left[\begin{array}{c} \frac{\partial{J}}{y'_1} ,  \frac{\partial{J}}{y'_2} , \cdots , \frac{\partial{J}}{y'_k} , \cdots \end{array}\right]
 \end{align}&lt;/script&gt;
 
 &lt;p&gt;Also,&lt;/p&gt;
@@ -174,14 +174,14 @@ h_k^o = y'_k \tag{6} \label{eq6}
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
 \nabla_{\mathbf{b}^l}J &amp;=  \pmb{\delta}^l   &amp;&amp; \text{by \eqref{eq21}} \tag{25} \label{eq25}\\
-\nabla_{\mathbf{W}^l}J &amp;=  \pmb{\delta}^l  \otimes (\mathbf{h}^{l-1})^T &amp;&amp; \text{by \eqref{eq19}} \tag{26} \label{eq26}\\
+\nabla_{\mathbf{W}^l}J &amp;=  (\mathbf{h}^{l-1})^T \otimes \pmb{\delta}^l  &amp;&amp; \text{by \eqref{eq19}} \tag{26} \label{eq26}\\
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;p&gt;Where, &lt;script type=&quot;math/tex&quot;&gt;\nabla_{\mathbf{W}^l}J&lt;/script&gt;, Derivative of J with respect recpect to matrix &lt;script type=&quot;math/tex&quot;&gt;\mathbf{W}^l&lt;/script&gt;, i.e.&lt;/p&gt;
 
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
-\nabla_{\mathbf{W}^l}J =  \frac{\partial{J}}{\partial{\mathbf{W}^l}}  = \begin{bmatrix} \frac{\partial{J}}{\partial{w_{11}}} &amp; \frac{\partial{J}}{\partial{w_{12}}} &amp; \cdots &amp; \frac{\partial{J}}{\partial{w_{1i}}} &amp; \cdots \\ \frac{\partial{J}}{\partial{w_{21}}} &amp; \frac{\partial{J}}{\partial{w_{22}}} &amp; \cdots &amp; \frac{\partial{J}}{\partial{w_{2i}}} &amp; \cdots \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\ \frac{\partial{J}}{\partial{w_{j1}}} &amp; \frac{\partial{J}}{\partial{w_{j2}}} &amp; \cdots &amp; \frac{\partial{J}}{\partial{w_{ji}}} &amp; \cdots \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots \end{bmatrix}
+\nabla_{\mathbf{W}^l}J =  \frac{\partial{J}}{\partial{\mathbf{W}^l}}  = \begin{bmatrix} \frac{\partial{J}}{\partial{w_{11}}} &amp; \frac{\partial{J}}{\partial{w_{12}}} &amp; \cdots &amp; \frac{\partial{J}}{\partial{w_{1j}}} &amp; \cdots \\ \frac{\partial{J}}{\partial{w_{21}}} &amp; \frac{\partial{J}}{\partial{w_{22}}} &amp; \cdots &amp; \frac{\partial{J}}{\partial{w_{2j}}} &amp; \cdots \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\ \frac{\partial{J}}{\partial{w_{i1}}} &amp; \frac{\partial{J}}{\partial{w_{i2}}} &amp; \cdots &amp; \frac{\partial{J}}{\partial{w_{ij}}} &amp; \cdots \\ \vdots &amp; \vdots &amp; \vdots &amp; \vdots \end{bmatrix}
 \end{align} %]]&gt;&lt;/script&gt;
 
 &lt;h4 id=&quot;update-step&quot;&gt;Update step:&lt;/h4&gt;
@@ -202,16 +202,14 @@ h_k^o = y'_k \tag{6} \label{eq6}
 &lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
 \begin{align}
 \mathbf{h}^l &amp;= \sigma(\mathbf{z}^l) &amp;&amp; \text{by \eqref{eq7}} \\
-\mathbf{z}^l &amp;= \mathbf{W}^l \otimes \mathbf{h}^{l-1} + \mathbf{b}^l &amp;&amp; \text{by \eqref{eq8}}  \\
+\mathbf{z}^l &amp;= \mathbf{h}^{l-1} \otimes \mathbf{W}^l + \mathbf{b}^l &amp;&amp; \text{by \eqref{eq8}}  \\
 \pmb{\delta}^o &amp;= \nabla_{\mathbf{y'}}J \odot \sigma'(\mathbf{z}^o) &amp;&amp; \text{by \eqref{eq23}} \\
-\pmb{\delta}^l &amp;= ((\mathbf{W}^{l+1})^T \otimes \pmb{\delta}^{l+1} )\odot  \sigma'({\mathbf{z}^l}) &amp;&amp; \text{by \eqref{eq24}} \\
+\pmb{\delta}^l &amp;= (\pmb{\delta}^{l+1} \otimes (\mathbf{W}^{l+1})^T )\odot  \sigma'({\mathbf{z}^l}) &amp;&amp; \text{by \eqref{eq24}} \\
 \nabla_{\mathbf{b}^l}J &amp;=  \pmb{\delta}^l   &amp;&amp; \text{by \eqref{eq26}} \\
-\nabla_{\mathbf{W}^l}J &amp;=  \pmb{\delta}^l  \otimes (\mathbf{h}^{l-1})^T &amp;&amp; \text{by \eqref{eq26}} \\
+\nabla_{\mathbf{W}^l}J &amp;=  (\mathbf{h}^{l-1})^T \otimes \pmb{\delta}^l  &amp;&amp; \text{by \eqref{eq26}} \\
 \mathbf{b}_l &amp;= \mathbf{b}_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{b}^l}J^{(i)} &amp;&amp; \text{by \eqref{eq27}}  \\
 \mathbf{W}_l &amp;= \mathbf{W}_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} &amp;&amp; \text{by \eqref{eq28}} \\
 \end{align} %]]&gt;&lt;/script&gt;
-
-&lt;h4 id=&quot;python-notebook&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/4-neural-networks-part-3-feedforward-neural-network.ipynb&quot;&gt;Python Notebook&lt;/a&gt;&lt;/h4&gt;
 
 &lt;h4 id=&quot;code&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/tree/master/Projects/Neural_networks/src&quot;&gt;Code&lt;/a&gt;&lt;/h4&gt;
 
@@ -535,9 +533,9 @@ b &amp;= b - \eta \cdot \frac{\partial{J}}{\partial{b}} \\
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
-&lt;h4 id=&quot;code&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/2-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Code&lt;/a&gt;&lt;/h4&gt;
+&lt;h4 id=&quot;code&quot;&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Code&lt;/a&gt;&lt;/h4&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/2-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Here&lt;/a&gt; is the python implementation of the above article.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb&quot;&gt;Here&lt;/a&gt; is the python implementation of the above article.&lt;/p&gt;
 
 &lt;h4 id=&quot;stochastic-gradient-descent-sgd&quot;&gt;Stochastic gradient descent, SGD&lt;/h4&gt;
 &lt;p&gt;When training data size &lt;script type=&quot;math/tex&quot;&gt;m&lt;/script&gt; is large we choose &lt;script type=&quot;math/tex&quot;&gt;% &lt;![CDATA[
