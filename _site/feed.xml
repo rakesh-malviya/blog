@@ -2,8 +2,8 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
 	<channel>
 		<title>Rakesh Malviya</title>
-		<link>http://localhost:4000</link>
-		<atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+		<link> </link>
+		<atom:link href=" /feed.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
 				<title>4. Neural Networks Part 3: Feedforward neural network</title>
@@ -221,8 +221,8 @@ h_k^o = y'_k \tag{6} \label{eq6}
 &lt;/ol&gt;
 </description>
 				<pubDate>Sun, 17 Sep 2017 00:00:00 +0530</pubDate>
-				<link>http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html</guid>
+				<link> /2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html</link>
+				<guid isPermaLink="true"> /2017/09/17/4-neural-networks-part-3-feedforward-neural-network.html</guid>
 			</item>
 		
 			<item>
@@ -382,15 +382,15 @@ tanh(x) &amp;= \frac{sinh(x)}{cosh(x)}  \tag{9} \label{eq9} \\
 &lt;/ol&gt;
 </description>
 				<pubDate>Sat, 02 Sep 2017 00:00:00 +0530</pubDate>
-				<link>http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html</guid>
+				<link> /2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html</link>
+				<guid isPermaLink="true"> /2017/09/02/3-neural-networks-part-2-activation-functions-and-differentiation.html</guid>
 			</item>
 		
 			<item>
 				<title>2. Neural Networks Part 1: Logistic Regression (Least Square Error)</title>
         <description>&lt;p&gt;Required Learning: Linear regression basics &lt;a href=&quot;http://www.holehouse.org/mlclass/01_02_Introduction_regression_analysis_and_gr.html&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units.&lt;/p&gt;
+&lt;p&gt;We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression (If the neural network has only Sigmoid activations function, since logistic regression uses Sigmoid function. Don’t worry this will get clear in following blogs). Therefore a neural network can be considered as a networked set of logistic regression units.&lt;/p&gt;
 
 &lt;h4 id=&quot;establish-notations-for-future-use1&quot;&gt;Establish notations for future use&lt;sup&gt;&lt;a href=&quot;#references&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/h4&gt;
 &lt;ol&gt;
@@ -416,7 +416,7 @@ where&lt;/p&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_j&lt;/script&gt; &lt;strong&gt;weights&lt;/strong&gt; or &lt;strong&gt;training parameters&lt;/strong&gt; we need to learn&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;We will apply gradient descent to minimize the squared error cost function &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;, also called least square error&lt;/p&gt;
+&lt;p&gt;We will apply gradient descent to minimize the squared error cost function &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;, also called least square error. (&lt;strong&gt;Note:&lt;/strong&gt; We can use a better cost function for logistic regression, we are using least square error for simplicity)&lt;/p&gt;
 
 &lt;p&gt;\begin{align}
 J = \frac{1}{2m}\sum_{i=1}^{m} (y^{(i)} - y’^{(i)})^2 \tag{1} \label{eq1}
@@ -571,8 +571,8 @@ m' &lt; m %]]&gt;&lt;/script&gt;  of batch size. We divide our training data int
 &lt;p&gt;&lt;a href=&quot;/2017/08/15/word2vec-basics.html&quot;&gt;“1. Word2vec Part 1: Basics”&lt;/a&gt;&lt;/p&gt;
 </description>
 				<pubDate>Fri, 25 Aug 2017 00:00:00 +0530</pubDate>
-				<link>http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html</guid>
+				<link> /2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html</link>
+				<guid isPermaLink="true"> /2017/08/25/2-neural-networks-part-1-logistic-regression-least-square-error.html</guid>
 			</item>
 		
 			<item>
@@ -785,8 +785,8 @@ The Leopard ____ very fast
 &lt;/ol&gt;
 </description>
 				<pubDate>Tue, 15 Aug 2017 00:00:00 +0530</pubDate>
-				<link>http://localhost:4000/2017/08/15/word2vec-basics.html</link>
-				<guid isPermaLink="true">http://localhost:4000/2017/08/15/word2vec-basics.html</guid>
+				<link> /2017/08/15/word2vec-basics.html</link>
+				<guid isPermaLink="true"> /2017/08/15/word2vec-basics.html</guid>
 			</item>
 		
 	</channel>
