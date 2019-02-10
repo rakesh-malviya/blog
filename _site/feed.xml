@@ -390,7 +390,9 @@ tanh(x) &amp;= \frac{sinh(x)}{cosh(x)}  \tag{9} \label{eq9} \\
 				<title>2. Neural Networks Part 1: Logistic Regression (Least Square Error)</title>
         <description>&lt;p&gt;Required Learning: Linear regression basics &lt;a href=&quot;http://www.holehouse.org/mlclass/01_02_Introduction_regression_analysis_and_gr.html&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression (If the neural network has only Sigmoid activations function, since logistic regression uses Sigmoid function. Don’t worry this will get clear in following blogs). Therefore a neural network can be considered as a networked set of logistic regression units.&lt;/p&gt;
+&lt;p&gt;We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note: Above is true for neural network which has only Sigmoid activations function, since logistic regression uses Sigmoid function. Don’t worry this will get clear in following blogs&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h4 id=&quot;establish-notations-for-future-use1&quot;&gt;Establish notations for future use&lt;sup&gt;&lt;a href=&quot;#references&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/h4&gt;
 &lt;ol&gt;
@@ -416,7 +418,9 @@ where&lt;/p&gt;
   &lt;li&gt;&lt;script type=&quot;math/tex&quot;&gt;w_j&lt;/script&gt; &lt;strong&gt;weights&lt;/strong&gt; or &lt;strong&gt;training parameters&lt;/strong&gt; we need to learn&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;We will apply gradient descent to minimize the squared error cost function &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;, also called least square error. (&lt;strong&gt;Note:&lt;/strong&gt; We can use a better cost function for logistic regression, we are using least square error for simplicity)&lt;/p&gt;
+&lt;p&gt;We will apply gradient descent to minimize the squared error loss function &lt;script type=&quot;math/tex&quot;&gt;J&lt;/script&gt;, also called least square error.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note: We can use a better loss function for logistic regression, but we are using least square error for simplicity&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;\begin{align}
 J = \frac{1}{2m}\sum_{i=1}^{m} (y^{(i)} - y’^{(i)})^2 \tag{1} \label{eq1}

@@ -10,7 +10,9 @@ tags:
 
 Required Learning: Linear regression basics [link](http://www.holehouse.org/mlclass/01_02_Introduction_regression_analysis_and_gr.html) 
 
-We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression (If the neural network has only Sigmoid activations function, since logistic regression uses Sigmoid function. Don't worry this will get clear in following blogs). Therefore a neural network can be considered as a networked set of logistic regression units.
+We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units. 
+
+**Note: Above is true for neural network which has only Sigmoid activations function, since logistic regression uses Sigmoid function. Don't worry this will get clear in following blogs**
 
 #### Establish notations for future use<sup>[1](#references)</sup>
 1. $$x^{(i)}$$ to denote the i<sup>th</sup> “input ” of training data
@@ -35,7 +37,9 @@ where
 3. $$u^{(i)} = {b} + \sum_{j=1}^{n} {w_j}\cdot{x_j^{(i)}}$$, for $$i^{th}$$ training example, where $$b$$ is bias of the neuron.
 4. $$w_j$$ **weights** or **training parameters** we need to learn
 
-We will apply gradient descent to minimize the squared error cost function $$J$$, also called least square error. (**Note:** We can use a better cost function for logistic regression, we are using least square error for simplicity)
+We will apply gradient descent to minimize the squared error loss function $$J$$, also called least square error. 
+
+**Note: We can use a better loss function for logistic regression, but we are using least square error for simplicity**
 
 \begin{align}
 J = \frac{1}{2m}\sum_{i=1}^{m} (y^{(i)} - y'^{(i)})^2 \tag{1} \label{eq1}
