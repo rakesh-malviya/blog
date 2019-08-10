@@ -10,9 +10,9 @@ tags:
 
 Required Learning: Linear regression basics [link](http://www.holehouse.org/mlclass/01_02_Introduction_regression_analysis_and_gr.html) 
 
-We are starting from basic unit of Neural networks single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units. 
+We are starting from basic unit of Neural networks - the single activation neuron. A Neural network with single neuron is same as logistic regression. Therefore a neural network can be considered as a networked set of logistic regression units. 
 
-**Note: Above is true for neural network which has only Sigmoid activations function, since logistic regression uses Sigmoid function. Don't worry this will get clear in following blogs**
+**Note: Above is true for neural network which has only Sigmoid activations function, since logistic regression uses Sigmoid function. Don't worry this will be clear in subsequent blogs**
 
 #### Establish notations for future use<sup>[1](#references)</sup>
 1. $$x^{(i)}$$ to denote the i<sup>th</sup> “input ” of training data
@@ -20,7 +20,7 @@ We are starting from basic unit of Neural networks single activation neuron. A N
 3. Pair $$(x^{(i)}, y^{(i)})$$ is called a training example
 4. The dataset that we’ll be using to learn—a list of m training examples $$\{(x(i), y(i)); i = 1, . . . , m\}$$ — is called a training set
 5. Each $$x^{(i)}$$ in training set can have $$n$$ **features** such that $$x^{(i)}$$ is a vector $$(x^{(i)}_1,x^{(i)}_2,x^{(i)}_3,..... x^{(i)}_n)$$
-6. In current setup of logistic regression $$y^{(i)}$$ is scalar value
+6. In current setup of logistic regression, $$y^{(i)}$$ is scalar value
 
 
 **Note that the superscript “(i)” in the notation is simply an index into the training set, and has nothing to do with exponentiation.**
@@ -35,7 +35,7 @@ where
 1. $$y'^{(i)}$$ is predicted output
 2. $$f$$ is activation function
 3. $$u^{(i)} = {b} + \sum_{j=1}^{n} {w_j}\cdot{x_j^{(i)}}$$, for $$i^{th}$$ training example, where $$b$$ is bias of the neuron.
-4. $$w_j$$ **weights** or **training parameters** we need to learn
+4. $$w_j$$ are the **weights** or **training parameters** we need to learn
 
 We will apply gradient descent to minimize the squared error loss function $$J$$, also called least square error. 
 
@@ -157,10 +157,11 @@ Code snippet of above steps:
 [Here](https://github.com/rakesh-malviya/MLCodeGems/blob/master/notebooks/Neural_networks/3-neural-networks-part-1-logistic-regression-least-square-error.ipynb) is the python implementation of the above article.
 
 #### Stochastic gradient descent, SGD
-When training data size $$m$$ is large we choose $$m' < m$$  of batch size. We divide our training data into batches of size $$m'$$. We update weights and bias for each batch as follows:
+When training data size $$m$$ is large, we choose $$m' < m$$  of batch size. We divide our training data into batches of size $$m'$$. We update weights and bias for each batch as follows:
 1. Choose an initial vector of parameters  $$w = (w_1,......w_n)$$, bias $$b$$ and learning rate $$\eta$$.
 2. Divide training data into batches of size $$m'$$
-3. Repeat for predifined epoch such that approximate minimum $$J$$ loss is obtained:
+   1. One epoch is applying gradient descient on training data once or applying SGD on all batches of training data 
+3. Repeat for predifined number of epochs such that approximate minimum $$J$$ loss is obtained:
    1. Repeat for each batch:
         1. Evaluate and store $$y'^{(i)}$$ for all $$i = 1,2,3...m$$ training examples by using equation $$\eqref{eq2}$$
         2. Update bias, $$b = b - \eta \cdot  \frac{1}{m'}\sum_{i=1}^{m'}  (y'^{(i)} - y^{(i)}) \cdot  y'^{(i)} \cdot (1 - y'^{(i)})$$
