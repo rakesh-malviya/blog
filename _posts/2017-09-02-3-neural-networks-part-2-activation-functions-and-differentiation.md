@@ -10,13 +10,15 @@ tags:
 
 ## Activation functions
 
-A neural network is a network of artificial neurons connected to each other in a specific way. Job of neural network is to learn from given data. The prediction function that neural network must learn can be non-linear. Activation function in artificial neurons helps the neural network to learn non-linear prediction function.
+A neural network is a network of artificial neurons connected to each other in a specific way. Job of neural network is to learn from given data. The prediction function that neural network must learn can be highly non-linear. Activation functions for artificial neurons are chosen to capture underlying non-liearity.
 
 Linear prediction             |  Non-linear prediction<sup>[1](#references)</sup>
 :-------------------------:|:-------------------------:
 ![]({{site.baseurl}}/assets/img/blog/3/3_1_linear.png)  | ![]({{site.baseurl}}/assets/img/blog/3/3_2_nonlinear.png)
 
 Activation functions (generally) have functional form of $$f(u) = f(w^{T}{x} + b)$$, where $$u = {b} + \sum_{j=1}^{n} {w_j}\cdot{x_j} = w^{T}{x} + b$$, $$w = (w_1,w_2,.......w_n)$$ weight vector  and $$x= (x_1,x_2,.....x_n)$$ single training data vector
+
+This can be treated as linear combination of inputs, followed by a non-linear transformation. There are multitude of options available to  chose a non-linear transformation. Some of the prominent ones are as follows. 
 
 #### 1. Sigmoid activation function
 
@@ -26,8 +28,8 @@ A sigmoid function, $$f(u) = \frac{1}{1+e^{-u}}$$.  It takes a real-valued numbe
 For classification problem it is used as activation of output layer of a neural network.
 
 ##### Cons:
-1. **Saturate and kill gradients:** When neuron's activation saturates at 1 or 0 , the gradient becomes almost zero. Which will make the neuron unable to backpropagate and learn.
-2. **Outputs are not zero-centered:** Since outputs are in range 0 to 1 neurons in next layer will receive data that is not zero centered. Hence gradient of weights $$w$$ during backpropagation will be either all positive or all negative, which can cause undesirable zig-zagging dynamics in gradient updates of weights. When considering gradient added over all training data in a batch this problem is not much severe compared to "Saturate and kill gradients"
+1. **Can saturate and kill gradients:** When neuron's activation saturates at 1 or 0 , the gradient becomes almost zero. This creates difficulties in  learning.
+2. **Outputs are not zero-centered:** Since outputs are in range 0 to 1, neurons in next layer will receive data that is not zero centered. Hence, gradient of weights $$w$$ during backpropagation will be either all positive or all negative, which can cause undesirable zig-zagging dynamics in gradient updates of weights. When considering gradients added over all training data in a batch, this problem will not be much severe compared to "Saturate and kill gradients"
 
 #### 2. Tanh activation function
 A tanh function, $$f(u) = \frac{e^{u}-e^{-u}}{e^{u}+e^{-u}} = \frac{sinh(u)}{cosh(u)}$$.  It takes a real-valued number and “squeeze” it into range between -1 and 1. Large negative numbers become $$\approx -1$$ and large positive numbers become $$\approx 1$$. 
@@ -46,8 +48,8 @@ The Rectified Linear Unit, ReLU is $$f(u) = max(0,u)$$
 4. **Sparsity:** When more $$u <= 0$$, the $$f(u)$$ can be more sparse
 
 ##### Cons:
-1. Tend to blow up activation (there is no mechanism to constrain the output of the neuron, as $$u$$ itself is the output).
-2. **Closed ReLU or Dead ReLU**: If inputs tend to make $$u<=0$$ than the most of the neurons will always have 0 gradient updates hence closed or dead.
+1. Tends to blow up activation (there is no mechanism to constrain the output of the neuron, as $$u$$ itself is the output).
+2. **Closed ReLU or Dead ReLU**: If inputs tend to make $$u<=0$$, then the most of the neurons will always have 0 gradient updates hence closed or dead.
 
 #### 4. Leaky ReLU:
 
@@ -81,13 +83,13 @@ Maxout has pros of ReLU but doesn't have dead ReLU issue
 It has twice number of weight parameters to learn $$w'$$ and $$w$$
 
 ## What Activation function should I use ?<sup>[2](#references)</sup>
-1. For output layer use sigmoid if classification task
-2. For output layer use no activation or Purelin function $$f(u) = u$$ if regression task
+1. For output layer, use sigmoid or softmax in classification task
+2. For output layer, use no activation or Purelin function $$f(u) = u$$ in regression task
 3. For other neurons: 
-    1. Use the ReLU non-linearity if you carefully set learning rates and monitor the fraction of “dead ReLU” in network.
+    1. Use the ReLU non-linearity, if you carefully set learning rates and monitor the fraction of “dead ReLU” in network.
     2. Else try Leaky ReLU or Maxout.
-    3. Or try tanh but it will work worse than ReLU
-    4. Never use sigmoid
+    3. Or try tanh, although it might be worse than ReLU
+    4. Avoid sigmoid
 
 ## Differentiation:
 #### Basic formulas:
