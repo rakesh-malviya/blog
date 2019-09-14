@@ -25,7 +25,7 @@ This can be treated as linear combination of inputs, followed by a non-linear tr
 A sigmoid function, $$f(u) = \frac{1}{1+e^{-u}}$$.  It takes a real-valued number and “squeeze” it into range between 0 and 1. Large negative numbers become $$\approx 0$$ and large positive numbers become $$\approx 1$$. 
 
 ##### Pros: 
-For classification problem it is used as activation of output layer of a neural network.
+For binary classification problem it is used as activation of output layer of a neural network.
 
 ##### Cons:
 1. **Can saturate and kill gradients:** When neuron's activation saturates at 1 or 0 , the gradient becomes almost zero. This creates difficulties in  learning.
@@ -37,6 +37,8 @@ A tanh function, $$f(u) = \frac{e^{u}-e^{-u}}{e^{u}+e^{-u}} = \frac{sinh(u)}{cos
 ##### Pros:
 It is preferred over sigmoid because its outputs are zero centered
 
+##### Cons:
+**Can saturate and kill gradients:** When neuron's activation saturates at 1 or -1 , the gradient becomes almost zero. This creates difficulties in  learning.
 
 #### 3. ReLU activation function 
 The Rectified Linear Unit, ReLU is $$f(u) = max(0,u)$$
@@ -58,7 +60,7 @@ It solves the dead ReLU problem. $$0.01$$ is coefficient of leakage.  Leaky ReLU
 $$
     f(u)= 
 \begin{cases}
-    x,& \text{if } x > 0\\
+    x,& \text{if } x >= 0\\
     (0.01)x,              & \text{otherwise}
 \end{cases}
 $$
@@ -68,7 +70,7 @@ Parameterizes coefficient of leakage $$\alpha$$ in Leaky ReLU.
 $$
     f(u)= 
 \begin{cases}
-    x,& \text{if } x > 0\\
+    x,& \text{if } x >= 0\\
     \alpha{x},              & \text{otherwise}
 \end{cases}
 $$
@@ -81,6 +83,14 @@ Maxout has pros of ReLU but doesn't have dead ReLU issue
 
 ##### Cons:
 It has twice number of weight parameters to learn $$w'$$ and $$w$$
+
+#### 7. Softmax
+
+Softmax <sup>[3](#references)</sup>|
+:-------------------------:|
+![]({{site.baseurl}}/assets/img/blog/3/3_3_Softmax.png) |
+
+A sofmax function  is generalization of sigmoid function. Sigmoid is used for 2-class (binary) classification whereas  Softmax is used for multi-class classification. As shown in above figure Softmax function turns logits [2.0, 1.0, 0.1] into probabilities [0.7, 0.2, 0.1]
 
 ## What Activation function should I use ?<sup>[2](#references)</sup>
 1. For output layer, use sigmoid or softmax in classification task
@@ -140,6 +150,9 @@ $$
 \end{align}
 $$
 
+
+
 ## References:
 1. Tensorflow playground [link](http://playground.tensorflow.org)
 2. http://cs231n.github.io
+3. Udacity Deep Learning Slide on Softmax
