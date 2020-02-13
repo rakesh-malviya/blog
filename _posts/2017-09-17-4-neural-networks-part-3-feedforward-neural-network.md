@@ -22,7 +22,7 @@ tags:
 
 #### Establish Notations:
 1. For notational convenience we have removed superscript (i) for $$i^{th}$$ training example $$(x,y)$$. So $$x$$ is single training input, $$y$$ is expected output and $$y'$$ is predicted output
-2. Input $$\mathbf{x}$$ is such that $$\mathbf{}x$$ is a row vector $$(x_1,x_2,x_3,..... x_n)$$ of size $$n$$.
+2. Input $$\mathbf{x}$$ is such that $$\mathbf{x}$$ is a row vector $$(x_1,x_2,x_3,..... x_n)$$ of size $$n$$.
 3. We have $$l$$ hidden layers. Output layer is denoted by $$l+1$$ or $$o$$
 4. Each layer $$l$$ has following attributes weight matrix $$\mathbf{W}^l$$, output vector $$\mathbf{h}^l$$ and bias vector $$\mathbf{b}^l$$.
 5. **I am proposing below notations for your ease of understanding the equations in upcoming sections. Also check Fig 1 above**
@@ -31,7 +31,7 @@ tags:
 8. **You need to think carefully why I am proposing below sizes for weight matrix, output vector and bias. It will help if you assume this, read understand whole article, comeback to this and think**.
 9. For layer  $$l$$ weight matrix $$\mathbf{W}^l$$ has size $$[p \times q]$$ and for ouput layer $$\mathbf{W}^o$$ has size $$[q \times r]$$
 10.  For layer  $$l-1$$ row vectors $$\mathbf{h}^{l-1}$$ and $$\mathbf{b}^{l-1}$$ has size $$p$$ and  for layer  $$l$$ row vectors $$\mathbf{h}^l$$ and $$\mathbf{b}^l$$ has size $$q$$ and for output layer $$o$$ row vectors $$\mathbf{h}^o$$ and $$\mathbf{b}^o$$ has size $$r$$
-11.  $$j^{th}$$ Artificial neuron in layer $$l$$  has bias $$b_j^l$$ (scalar), output $$h_j^l$$(scalar),  weight vector $$\mathbf{W}_{:j}^l$$ , i.e. $$j^{th}$$ column of weight matrix $$\mathbf{W}^l$$ for layer l. Also weight vector $$\mathbf{W}_{:j}^l = (w_{1j},w_{2j},....w_{ij}...,w_{pj},)$$. *It will help it you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output*.
+11.  $$j^{th}$$ Artificial neuron in layer $$l$$  has bias $$b_j^l$$ (scalar), output $$h_j^l$$(scalar),  weight vector $$\mathbf{w}_{j}^l$$ , i.e. $$j^{th}$$ column of weight matrix $$\mathbf{W}^l$$ for layer l. Also weight vector $$\mathbf{w}_{j}^l = (w_{1j},w_{2j},....w_{ij}...,w_{pj},)$$. *It will help if you remember from my previous post on logistic reggression that each neuron has weight vector, (scalar or single value) bias and output*.
 12.  **Below notations are neccessary to easy of understand and implementing mathematical equations in upcoming sections**
 13.  We will use $$\odot$$ for elementwise multiplication of two vectors, for example $$\left[\begin{array}{c} 1 , 2 \end{array}\right]   \odot \left[\begin{array}{c} 1 , 2\end{array} \right]= \left[ \begin{array}{c} {1 \cdot 1} , {2 \cdot 2} \end{array} \right]= \left[ \begin{array}{c} 1 , 4 \end{array} \right]$$
 14.  We will use $$\otimes$$ for matrix multiplication
@@ -42,7 +42,7 @@ Let us use our Neural network (in Fig 1) for classification. Note, for binary cl
 
 Let our loss function, $$J = \frac{1}{2}\sum_{k=1}^{r}(y_k - y'_k)^2$$.
 
-So our goal is to minimize loss, $$J$$. We can do this only by learning correct weights and bias for each neuron in our network. It looks complex if we look at each neuron individualy. We can simplify this task by breaking our training steps into three steps of **Backpropagation**:
+So our goal is to minimize loss, $$J$$. We can do this only by learning correct weights and bias for each neuron in our network. It looks complex if we look at each neuron individualy. We can simplify this task by breaking our training steps into three steps of **training**:
 1. **Forward pass:** calculate output of each neuron.
 2. **Backward pass:** calculate $$\frac{\partial{J}}{\partial{b_j^l}}$$ and $$\frac{\partial{J}}{\partial{w_{ij}^l}}$$ for each neuron.
 3. **Update weights and biases**
@@ -208,12 +208,12 @@ $$
 
 $$
 \begin{align}
-\mathbf{b}_l &= \mathbf{b}_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{b}^l}J^{(i)} \tag{27} \label{eq27}\\
-\mathbf{W}_l &= \mathbf{W}_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} \tag{28} \label{eq28}\\
+\mathbf{b}^l &= \mathbf{b}^l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{b}^l}J^{(i)} \tag{27} \label{eq27}\\
+\mathbf{W}^l &= \mathbf{W}^l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} \tag{28} \label{eq28}\\
 \end{align} 
 $$
 
-#### td;dr.
+#### Tl;dr.
 
 $$
 \begin{align}
@@ -223,8 +223,8 @@ $$
 \pmb{\delta}^l &= (\pmb{\delta}^{l+1} \otimes (\mathbf{W}^{l+1})^T )\odot  \sigma'({\mathbf{z}^l}) && \text{by \eqref{eq24}} \\
 \nabla_{\mathbf{b}^l}J &=  \pmb{\delta}^l   && \text{by \eqref{eq26}} \\
 \nabla_{\mathbf{W}^l}J &=  (\mathbf{h}^{l-1})^T \otimes \pmb{\delta}^l  && \text{by \eqref{eq26}} \\
-\mathbf{b}_l &= \mathbf{b}_l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{b}^l}J^{(i)} && \text{by \eqref{eq27}}  \\
-\mathbf{W}_l &= \mathbf{W}_l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} && \text{by \eqref{eq28}} \\
+\mathbf{b}^l &= \mathbf{b}^l -\eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{b}^l}J^{(i)} && \text{by \eqref{eq27}}  \\
+\mathbf{W}^l &= \mathbf{W}^l - \eta \cdot \frac{1}{m} \cdot \sum_{i=1}^{m} \nabla_{\mathbf{W}^l}J^{(i)} && \text{by \eqref{eq28}} \\
 \end{align} 
 $$
 
